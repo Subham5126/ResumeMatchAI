@@ -8,9 +8,11 @@ from app.services.resume_validator import validate_resume
 
 from app.services.job_parser import parse_job_description
 from app.services.scoring_engine import calculate_skill_score
-from app.services.semantic_matcher import semantic_skill_match
-from app.services.recommendation_engine import generate_recommendations
 
+# Semantic matcher disabled for Render Free Tier
+# from app.services.semantic_matcher import semantic_skill_match
+
+from app.services.recommendation_engine import generate_recommendations
 from app.services.ats_checker import calculate_ats_score
 
 from app.services.ai_interview_generator import generate_ai_interview_questions
@@ -22,7 +24,7 @@ from app.services.learning_roadmap import generate_learning_roadmap
 
 def analyze_resume(resume_path, job_description):
     """
-    Complete Resume Analysis Pipeline
+    Resume Analysis Pipeline (Render Free Tier Optimized)
     """
 
     # ======================================================
@@ -43,33 +45,20 @@ def analyze_resume(resume_path, job_description):
     # ----------------------------
 
     try:
-
         print("=" * 60)
         print("Generating AI Resume Parsing...")
         print("=" * 60)
 
         ai_resume_data = ai_parse_resume(resume_text)
 
-        # Validate AI JSON
         ai_resume_data = validate_resume(ai_resume_data)
 
-        print("AI Resume Parsing Successful.")
-
-        print("=" * 80)
-        print("AI Parsed Resume")
-        print(ai_resume_data)
-        print("=" * 80)
-
-        # Merge Regex + AI
         resume_data = merge_resume_data(
             resume_data,
             ai_resume_data
         )
 
-        print("=" * 80)
-        print("Merged Resume")
-        print(resume_data)
-        print("=" * 80)
+        print("AI Resume Parsing Successful.")
 
     except Exception as e:
 
@@ -80,7 +69,7 @@ def analyze_resume(resume_path, job_description):
         print("=" * 60)
 
     # ======================================================
-    # Job Description Processing
+    # Job Description
     # ======================================================
 
     job_data = parse_job_description(job_description)
@@ -95,13 +84,14 @@ def analyze_resume(resume_path, job_description):
     )
 
     # ======================================================
-    # Semantic Matching
+    # Semantic Matching Disabled
     # ======================================================
 
-    semantic_result = semantic_skill_match(
-        resume_data["skills"],
-        job_data["required_skills"]
-    )
+    semantic_result = {
+        "semantic_score": keyword_result["score"],
+        "matched": [],
+        "missing": keyword_result["missing_skills"]
+    }
 
     # ======================================================
     # Recommendations
@@ -114,7 +104,7 @@ def analyze_resume(resume_path, job_description):
     )
 
     # ======================================================
-    # ATS Resume Checker
+    # ATS Checker
     # ======================================================
 
     ats_report = calculate_ats_score(
@@ -141,7 +131,7 @@ def analyze_resume(resume_path, job_description):
         print("=" * 60)
         print("AI Interview Generation Failed")
         print(e)
-        print("Using Rule-Based Interview Questions...")
+        print("Using Rule-Based Questions...")
         print("=" * 60)
 
         interview_questions = generate_interview_questions(
@@ -179,13 +169,7 @@ def analyze_resume(resume_path, job_description):
     # Overall Score
     # ======================================================
 
-    overall_score = round(
-        (
-            keyword_result["score"] * 0.5
-            + semantic_result["semantic_score"] * 0.5
-        ),
-        2
-    )
+    overall_score = keyword_result["score"]
 
     # ======================================================
     # Final Response
@@ -202,10 +186,5 @@ def analyze_resume(resume_path, job_description):
         "interview_questions": interview_questions,
         "learning_roadmap": learning_roadmap
     }
-
-    print("=" * 80)
-    print("FINAL RESPONSE")
-    print(response)
-    print("=" * 80)
 
     return response
