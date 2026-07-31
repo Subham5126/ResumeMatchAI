@@ -31,7 +31,8 @@ app.include_router(cover_letter_router)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:5173"
+        "http://localhost:5173",
+        "https://resume-match-ai-git-main-subham5126s-projects.vercel.app",
     ],
     allow_credentials=True,
     allow_methods=["*"],
