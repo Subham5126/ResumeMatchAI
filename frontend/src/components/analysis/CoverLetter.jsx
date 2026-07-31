@@ -11,8 +11,8 @@ import {
 import toast from "react-hot-toast";
 
 import api from "../../services/api";
-import { downloadPDF } from "../utils/pdfGenerator";
-import { downloadDOCX } from "../utils/docxGenerator";
+import { downloadPDF } from "../../utils/pdfGenerator";
+import { downloadDOCX } from "../../utils/docxGenerator";
 
 const tones = [
   { value: "professional", label: "Professional" },
