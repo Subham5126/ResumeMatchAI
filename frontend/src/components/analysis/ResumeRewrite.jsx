@@ -11,7 +11,7 @@ import api from "../../services/api";
 import toast from "react-hot-toast";
 import { downloadPDF } from "../../utils/pdfGenerator";
 import { FileText } from "lucide-react";
-import { downloadDOCX } from "../utils/docxGenerator";
+import { downloadDOCX } from "../../utils/docxGenerator";
 const sections = [
   { value: "summary", label: "Professional Summary" },
   { value: "projects", label: "Projects" },
