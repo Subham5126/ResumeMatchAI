@@ -33,6 +33,7 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:5173",
         "https://resume-match-ai-git-main-subham5126s-projects.vercel.app",
+        "https://resume-match-1n1vxeh74-subham5126s-projects.vercel.app",
     ],
     allow_credentials=True,
     allow_methods=["*"],

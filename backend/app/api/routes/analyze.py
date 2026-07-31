@@ -13,7 +13,7 @@ UPLOAD_DIR = "uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 
-@router.post("/")
+@router.post("")
 async def analyze(
     resume: UploadFile = File(...),
     job_description: str = Form(...)
