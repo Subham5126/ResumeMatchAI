@@ -3,7 +3,14 @@ import json
 import os
 import spacy
 
-nlp = spacy.load("en_core_web_sm")
+_nlp = None
+
+def get_nlp():
+    global _nlp
+    if _nlp is None:
+        print("Loading spaCy...")
+        _nlp = spacy.load("en_core_web_sm")
+    return _nlp
 
 # ------------------------------
 # Load Skills Database
@@ -99,7 +106,7 @@ def extract_name(text):
         if 1 < len(words) <= 4:
             return line.title()
 
-    doc = nlp(text)
+    doc = get_nlp()(text)
 
     for ent in doc.ents:
         if ent.label_ == "PERSON":
