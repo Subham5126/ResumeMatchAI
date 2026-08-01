@@ -15,7 +15,7 @@ class ChatRequest(BaseModel):
     history: list = []
 
 
-@router.post("/")
+@router.post("")
 def chat(request: ChatRequest):
     return ask_career_coach(
         question=request.question,

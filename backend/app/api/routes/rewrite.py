@@ -15,7 +15,7 @@ class RewriteRequest(BaseModel):
     job_description: str = ""
 
 
-@router.post("/")
+@router.post("")
 def rewrite(request: RewriteRequest):
 
     rewritten = rewrite_resume_section(

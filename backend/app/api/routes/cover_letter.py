@@ -15,7 +15,7 @@ class CoverLetterRequest(BaseModel):
     length: str = "medium"
 
 
-@router.post("/")
+@router.post("")
 def create_cover_letter(request: CoverLetterRequest):
 
     cover_letter = generate_cover_letter(

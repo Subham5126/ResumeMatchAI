@@ -198,6 +198,24 @@ function ResultsDashboard({ analysis }) {
           />
         </section>
       )}
+      <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-center">
+        <h3 className="text-xl font-bold text-slate-800">
+          🎉 Thank you for using ResumeMatch AI!
+        </h3>
+
+        <p className="mt-2 text-slate-600">
+          We'd appreciate your feedback. It only takes a minute and helps us improve.
+        </p>
+
+        <a
+          href="https://docs.google.com/forms/d/e/1FAIpQLSdF2lEDeVLRHAfcy-ml5sMbvjpAIqp6XWB5t_0euoHaYY8URg/viewform"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-5 inline-flex rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white hover:bg-blue-700"
+        >
+          ⭐ Share Feedback
+        </a>
+      </div>
     </motion.div>
   );
 }
