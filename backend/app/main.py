@@ -35,6 +35,7 @@ app.add_middleware(
         "https://resume-match-ai-git-main-subham5126s-projects.vercel.app",
         "https://resume-match-1n1vxeh74-subham5126s-projects.vercel.app",
     ],
+    allow_origin_regex=r"https://.*\.vercel\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
