@@ -14,14 +14,15 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         toastOptions={{
           duration: 3000,
           style: {
-            borderRadius: "12px",
-            background: "#1e293b",
-            color: "#fff",
+            borderRadius: "14px",
+            background: "#0b1512",
+            color: "#e6f4ef",
+            border: "1px solid #1c2f29",
           },
           success: {
             iconTheme: {
-              primary: "#22c55e",
-              secondary: "#fff",
+              primary: "#10b981",
+              secondary: "#04110d",
             },
           },
           error: {

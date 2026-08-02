@@ -99,20 +99,20 @@ function ResultsDashboard({ analysis }) {
 
             <div className="flex items-center gap-4">
 
-              <div className="rounded-2xl bg-indigo-100 p-3">
+              <div className="rounded-2xl bg-emerald-500/10 p-3">
                 <Lightbulb
                   size={24}
-                  className="text-indigo-600"
+                  className="text-emerald-300"
                 />
               </div>
 
               <div>
 
-                <h2 className="text-3xl font-bold text-slate-900">
+                <h2 className="font-display text-3xl font-bold text-foreground">
                   AI Recommendations
                 </h2>
 
-                <p className="mt-1 text-slate-500">
+                <p className="mt-1 text-muted-foreground">
                   Personalized suggestions to improve your
                   resume for this specific job.
                 </p>
@@ -121,7 +121,7 @@ function ResultsDashboard({ analysis }) {
 
             </div>
 
-            <div className="inline-flex items-center rounded-full bg-indigo-100 px-4 py-2 text-sm font-semibold text-indigo-700">
+            <div className="inline-flex items-center rounded-full bg-emerald-500/10 px-4 py-2 text-sm font-semibold text-emerald-300">
               {analysis.recommendations.length} Suggestions
             </div>
 
@@ -198,22 +198,22 @@ function ResultsDashboard({ analysis }) {
           />
         </section>
       )}
-      <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-center">
-        <h3 className="text-xl font-bold text-slate-800">
-          🎉 Thank you for using ResumeMatch AI!
+      <div className="mt-8 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-8 text-center">
+        <h3 className="font-display text-xl font-bold text-foreground">
+          Thank you for using ResumeMatch AI
         </h3>
 
-        <p className="mt-2 text-slate-600">
-          We'd appreciate your feedback. It only takes a minute and helps us improve.
+        <p className="mt-2 text-muted-foreground">
+          {"We'd appreciate your feedback. It only takes a minute and helps us improve."}
         </p>
 
         <a
           href="https://docs.google.com/forms/d/e/1FAIpQLSdF2lEDeVLRHAfcy-ml5sMbvjpAIqp6XWB5t_0euoHaYY8URg/viewform"
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-5 inline-flex rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white hover:bg-blue-700"
+          className="mt-5 inline-flex rounded-xl bg-gradient-to-r from-emerald-400 to-teal-400 px-6 py-3 font-semibold text-primary-foreground shadow-lg shadow-emerald-500/25 transition hover:scale-105"
         >
-          ⭐ Share Feedback
+          Share Feedback
         </a>
       </div>
     </motion.div>

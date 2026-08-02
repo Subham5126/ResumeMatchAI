@@ -8,7 +8,7 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative overflow-hidden bg-gradient-to-b from-slate-50 via-white to-white py-14 lg:py-16"
+      className="relative overflow-hidden py-16 lg:py-24"
     >
       <BackgroundEffects />
 

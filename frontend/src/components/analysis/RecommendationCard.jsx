@@ -25,9 +25,9 @@ const icons = {
 };
 
 const priorityBadge = {
-  High: "bg-red-100 text-red-700",
-  Medium: "bg-amber-100 text-amber-700",
-  Low: "bg-blue-100 text-blue-700",
+  High: "bg-rose-500/15 text-rose-300",
+  Medium: "bg-amber-500/15 text-amber-300",
+  Low: "bg-emerald-500/15 text-emerald-300",
 };
 
 export default function RecommendationCard({ recommendation }) {
@@ -45,24 +45,24 @@ export default function RecommendationCard({ recommendation }) {
     <motion.div
       whileHover={{ y: -3 }}
       transition={{ duration: 0.2 }}
-      className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:shadow-lg"
+      className="rounded-2xl border border-border bg-card p-5 shadow-sm transition-colors hover:border-emerald-400/40 hover:shadow-lg"
     >
       {/* Header */}
       <div className="flex items-start justify-between">
 
         <div className="flex gap-4">
 
-          <div className="rounded-xl bg-slate-100 p-3">
-            <Icon className="text-slate-700" size={22} />
+          <div className="rounded-xl bg-emerald-500/10 p-3">
+            <Icon className="text-emerald-300" size={22} />
           </div>
 
           <div>
 
-            <p className="text-xs uppercase tracking-wide text-slate-500">
+            <p className="text-xs uppercase tracking-wide text-muted-foreground">
               {category}
             </p>
 
-            <h3 className="mt-1 text-lg font-semibold text-slate-800">
+            <h3 className="mt-1 text-lg font-semibold text-foreground">
               {title}
             </h3>
 
@@ -81,26 +81,26 @@ export default function RecommendationCard({ recommendation }) {
       </div>
 
       {/* Description */}
-      <p className="mt-4 text-sm leading-6 text-slate-600">
+      <p className="mt-4 text-sm leading-6 text-muted-foreground">
         {description}
       </p>
 
       {/* Action */}
       {action && (
-        <div className="mt-5 flex items-start gap-3 rounded-xl bg-slate-50 p-3">
+        <div className="mt-5 flex items-start gap-3 rounded-xl border border-border bg-secondary p-3">
 
           <Lightbulb
             size={18}
-            className="mt-0.5 text-indigo-600"
+            className="mt-0.5 text-emerald-300"
           />
 
           <div>
 
-            <p className="text-xs font-semibold uppercase text-slate-500">
+            <p className="text-xs font-semibold uppercase text-muted-foreground">
               Suggested Action
             </p>
 
-            <p className="mt-1 text-sm text-slate-700">
+            <p className="mt-1 text-sm text-foreground">
               {action}
             </p>
 

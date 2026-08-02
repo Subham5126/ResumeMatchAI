@@ -6,9 +6,9 @@ function ScoreCard({ title, score = 0 }) {
   const value = Math.round(score);
 
   const getColor = () => {
-    if (value >= 80) return "#22C55E";
+    if (value >= 80) return "#10B981";
     if (value >= 60) return "#F59E0B";
-    return "#EF4444";
+    return "#F43F5E";
   };
 
   const getStatus = () => {
@@ -29,7 +29,7 @@ function ScoreCard({ title, score = 0 }) {
         type: "spring",
         stiffness: 250,
       }}
-      className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+      className="rounded-2xl border border-border bg-card p-6 shadow-sm transition-colors hover:border-emerald-400/40"
     >
       <div className="mx-auto h-32 w-32">
         <CircularProgressbar
@@ -37,15 +37,15 @@ function ScoreCard({ title, score = 0 }) {
           text={`${value}%`}
           styles={buildStyles({
             pathColor: getColor(),
-            textColor: "#0F172A",
-            trailColor: "#E2E8F0",
+            textColor: "#e6f4ef",
+            trailColor: "#1c2f29",
             textSize: "18px",
           })}
         />
       </div>
 
       <div className="mt-5 text-center">
-        <h3 className="text-lg font-bold text-slate-900">
+        <h3 className="font-display text-lg font-bold text-foreground">
           {title}
         </h3>
 

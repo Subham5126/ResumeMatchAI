@@ -1,12 +1,12 @@
 function SkillBadge({ skill, type }) {
   const styles =
     type === "matched"
-      ? "bg-green-100 text-green-700 border-green-300"
-      : "bg-red-100 text-red-700 border-red-300";
+      ? "bg-emerald-500/10 text-emerald-300 border-emerald-500/30"
+      : "bg-rose-500/10 text-rose-300 border-rose-500/30";
 
   return (
     <span
-      className={`px-4 py-2 rounded-full border font-medium ${styles}`}
+      className={`rounded-full border px-4 py-2 text-sm font-medium ${styles}`}
     >
       {skill}
     </span>

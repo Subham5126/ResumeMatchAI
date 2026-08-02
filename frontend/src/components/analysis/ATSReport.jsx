@@ -21,21 +21,21 @@ function ATSReport({ report }) {
     if (score >= 85)
       return {
         text: "Excellent • Ready for Most ATS Systems",
-        color: "text-green-600",
-        badge: "bg-green-100 text-green-700",
+        color: "text-emerald-400",
+        badge: "bg-emerald-500/15 text-emerald-300",
       };
 
     if (score >= 70)
       return {
         text: "Good • Minor Improvements Recommended",
-        color: "text-amber-600",
-        badge: "bg-amber-100 text-amber-700",
+        color: "text-amber-400",
+        badge: "bg-amber-500/15 text-amber-300",
       };
 
     return {
       text: "Needs Improvement",
-      color: "text-red-600",
-      badge: "bg-red-100 text-red-700",
+      color: "text-rose-400",
+      badge: "bg-rose-500/15 text-rose-300",
     };
   };
 
@@ -47,21 +47,21 @@ function ATSReport({ report }) {
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.45 }}
       viewport={{ once: true }}
-      className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden"
+      className="rounded-2xl border border-border bg-card shadow-sm overflow-hidden"
     >
       {/* Header */}
 
-      <div className="bg-gradient-to-r from-slate-900 to-slate-800 px-6 py-5 text-white flex items-center justify-between">
+      <div className="border-b border-border bg-secondary px-6 py-5 text-foreground flex items-center justify-between">
         <div>
           <div className="flex items-center gap-2">
-            <ShieldCheck size={22} />
+            <ShieldCheck size={22} className="text-emerald-400" />
 
-            <h2 className="text-xl font-bold">
+            <h2 className="font-display text-xl font-bold">
               ATS Compatibility
             </h2>
           </div>
 
-          <p className="mt-2 text-sm text-slate-300">
+          <p className="mt-2 text-sm text-muted-foreground">
             {status.text}
           </p>
         </div>
@@ -87,9 +87,9 @@ function ATSReport({ report }) {
 
           {/* Strengths */}
 
-          <div className="rounded-xl border border-green-200 bg-green-50 p-5">
+          <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-5">
 
-            <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-green-700">
+            <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-emerald-300">
               <CheckCircle2 size={20} />
               Strengths
             </h3>
@@ -99,18 +99,18 @@ function ATSReport({ report }) {
                 strengths.map((item, index) => (
                   <div
                     key={index}
-                    className="flex items-start gap-2 text-sm text-slate-700"
+                    className="flex items-start gap-2 text-sm text-foreground/80"
                   >
                     <CheckCircle2
                       size={16}
-                      className="mt-0.5 text-green-500 flex-shrink-0"
+                      className="mt-0.5 text-emerald-400 flex-shrink-0"
                     />
 
                     <span>{item}</span>
                   </div>
                 ))
               ) : (
-                <p className="text-sm text-slate-500">
+                <p className="text-sm text-muted-foreground">
                   No strengths identified.
                 </p>
               )}
@@ -120,9 +120,9 @@ function ATSReport({ report }) {
 
           {/* Improvements */}
 
-          <div className="rounded-xl border border-amber-200 bg-amber-50 p-5">
+          <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-5">
 
-            <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-amber-700">
+            <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-amber-300">
               <AlertTriangle size={20} />
               Improvements
             </h3>
@@ -132,19 +132,19 @@ function ATSReport({ report }) {
                 improvements.map((item, index) => (
                   <div
                     key={index}
-                    className="flex items-start gap-2 text-sm text-slate-700"
+                    className="flex items-start gap-2 text-sm text-foreground/80"
                   >
                     <AlertTriangle
                       size={16}
-                      className="mt-0.5 text-amber-500 flex-shrink-0"
+                      className="mt-0.5 text-amber-400 flex-shrink-0"
                     />
 
                     <span>{item}</span>
                   </div>
                 ))
               ) : (
-                <p className="text-sm text-slate-500">
-                  No major improvements required 🎉
+                <p className="text-sm text-muted-foreground">
+                  No major improvements required.
                 </p>
               )}
             </div>
@@ -155,14 +155,14 @@ function ATSReport({ report }) {
 
         {/* AI Summary */}
 
-        <div className="rounded-xl border border-blue-200 bg-blue-50 p-5">
+        <div className="rounded-xl border border-teal-500/20 bg-teal-500/5 p-5">
 
-          <h3 className="mb-3 flex items-center gap-2 text-lg font-semibold text-blue-700">
+          <h3 className="mb-3 flex items-center gap-2 text-lg font-semibold text-teal-300">
             <Sparkles size={20} />
             AI Summary
           </h3>
 
-          <p className="text-sm leading-7 text-slate-700">
+          <p className="text-sm leading-7 text-foreground/80">
             {report.feedback}
           </p>
 

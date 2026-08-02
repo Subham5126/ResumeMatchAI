@@ -15,20 +15,20 @@ function SkillsSection({ matched = [], missing = [] }) {
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.45 }}
       viewport={{ once: true }}
-      className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm"
+      className="rounded-2xl border border-border bg-card p-8 shadow-sm"
     >
       <div className="mb-8 text-center">
-        <h2 className="text-3xl font-bold text-slate-900">
+        <h2 className="font-display text-3xl font-bold text-foreground">
           Skills Analysis
         </h2>
 
-        <p className="mt-3 text-slate-600">
+        <p className="mt-3 text-muted-foreground">
           Your resume matches{" "}
-          <span className="font-semibold text-blue-600">
+          <span className="font-semibold text-emerald-400">
             {matched.length}
           </span>{" "}
           out of{" "}
-          <span className="font-semibold">
+          <span className="font-semibold text-foreground">
             {total}
           </span>{" "}
           required skills.
@@ -38,8 +38,8 @@ function SkillsSection({ matched = [], missing = [] }) {
       <div className="grid gap-8 lg:grid-cols-2">
 
         <div>
-          <h3 className="mb-5 text-xl font-semibold text-green-600">
-            ✓ Matched Skills
+          <h3 className="mb-5 text-xl font-semibold text-emerald-400">
+            Matched Skills
           </h3>
 
           <div className="flex flex-wrap gap-3">
@@ -52,7 +52,7 @@ function SkillsSection({ matched = [], missing = [] }) {
                 />
               ))
             ) : (
-              <p className="text-slate-500">
+              <p className="text-muted-foreground">
                 No matched skills found.
               </p>
             )}
@@ -60,8 +60,8 @@ function SkillsSection({ matched = [], missing = [] }) {
         </div>
 
         <div>
-          <h3 className="mb-5 text-xl font-semibold text-red-600">
-            ✗ Missing Skills
+          <h3 className="mb-5 text-xl font-semibold text-rose-400">
+            Missing Skills
           </h3>
 
           <div className="flex flex-wrap gap-3">
@@ -74,8 +74,8 @@ function SkillsSection({ matched = [], missing = [] }) {
                 />
               ))
             ) : (
-              <p className="text-slate-500">
-                No missing skills 🎉
+              <p className="text-muted-foreground">
+                No missing skills.
               </p>
             )}
           </div>
@@ -84,17 +84,17 @@ function SkillsSection({ matched = [], missing = [] }) {
       </div>
 
       <div className="mt-10">
-        <div className="mb-2 flex justify-between text-sm font-medium">
+        <div className="mb-2 flex justify-between text-sm font-medium text-foreground">
           <span>Skill Match Rate</span>
-          <span>{percentage}%</span>
+          <span className="text-emerald-400">{percentage}%</span>
         </div>
 
-        <div className="h-3 overflow-hidden rounded-full bg-slate-200">
+        <div className="h-3 overflow-hidden rounded-full bg-muted">
           <motion.div
             initial={{ width: 0 }}
             animate={{ width: `${percentage}%` }}
             transition={{ duration: 0.8 }}
-            className="h-full rounded-full bg-gradient-to-r from-blue-500 to-indigo-600"
+            className="h-full rounded-full bg-gradient-to-r from-emerald-400 to-teal-400"
           />
         </div>
       </div>

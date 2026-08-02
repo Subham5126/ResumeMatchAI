@@ -44,16 +44,14 @@ function Navbar() {
   const navItem = (id, label) => (
     <button
       onClick={() => scrollToSection(id)}
-      className={`relative rounded-lg px-3 py-2 transition-all duration-300 hover:bg-blue-50 hover:text-blue-600 ${
-        active === id
-          ? "font-semibold text-blue-600"
-          : "text-slate-600"
+      className={`relative rounded-lg px-3 py-2 text-sm font-medium transition-all duration-300 hover:text-emerald-300 ${
+        active === id ? "text-emerald-300" : "text-muted-foreground"
       }`}
     >
       {label}
 
       {active === id && (
-        <span className="absolute left-3 right-3 -bottom-1 h-0.5 rounded-full bg-blue-600" />
+        <span className="absolute left-3 right-3 -bottom-1 h-0.5 rounded-full bg-gradient-to-r from-emerald-400 to-teal-400" />
       )}
     </button>
   );
@@ -62,8 +60,8 @@ function Navbar() {
     <nav
       className={`sticky top-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "border-b border-slate-200 bg-white/90 shadow-sm backdrop-blur-xl"
-          : "border-b border-transparent bg-white/70 backdrop-blur-lg"
+          ? "border-b border-border bg-background/80 shadow-lg shadow-black/30 backdrop-blur-xl"
+          : "border-b border-transparent bg-background/50 backdrop-blur-md"
       }`}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 lg:px-8">
@@ -74,29 +72,25 @@ function Navbar() {
           onClick={() => scrollToSection("home")}
           className="flex items-center gap-3"
         >
-          <div className="rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 p-3 shadow-lg">
-            <FaRobot className="text-lg text-white" />
+          <div className="rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 p-3 shadow-lg shadow-emerald-500/30">
+            <FaRobot className="text-lg text-primary-foreground" />
           </div>
 
           <div className="text-left">
-
-            <h1 className="text-2xl font-extrabold tracking-tight text-slate-900">
+            <h1 className="font-display text-2xl font-bold tracking-tight text-foreground">
               ResumeMatch{" "}
-              <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">
                 AI
               </span>
             </h1>
 
-            <p className="text-xs text-slate-500">
-              AI Resume Analyzer
-            </p>
-
+            <p className="text-xs text-muted-foreground">AI Resume Analyzer</p>
           </div>
         </button>
 
         {/* Navigation */}
 
-        <div className="hidden items-center gap-8 md:flex">
+        <div className="hidden items-center gap-6 md:flex">
           {navItem("home", "Home")}
           {navItem("features", "Features")}
           {navItem("about", "About")}
@@ -108,12 +102,11 @@ function Navbar() {
           href="https://github.com/Subham5126/ResumeMatchAI"
           target="_blank"
           rel="noopener noreferrer"
-          className="hidden items-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-2.5 font-medium text-slate-700 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-500 hover:text-blue-600 hover:shadow-lg md:flex"
+          className="hidden items-center gap-2 rounded-xl border border-border bg-card px-5 py-2.5 text-sm font-medium text-foreground shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-emerald-400/60 hover:text-emerald-300 md:flex"
         >
           <FaGithub className="text-lg" />
           GitHub
         </a>
-
       </div>
     </nav>
   );

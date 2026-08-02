@@ -23,7 +23,7 @@ function DashboardHeader({ analysis }) {
       initial={{ opacity: 0, y: 25 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.45 }}
-      className="overflow-hidden rounded-3xl border border-slate-200 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white shadow-xl"
+      className="overflow-hidden rounded-3xl border border-emerald-400/30 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 text-primary-foreground shadow-2xl shadow-emerald-500/20"
     >
       <div className="flex flex-col gap-8 p-8 lg:flex-row lg:items-center lg:justify-between">
 
@@ -31,23 +31,23 @@ function DashboardHeader({ analysis }) {
 
         <div>
 
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-white/20 px-4 py-2 text-sm font-medium backdrop-blur">
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-black/15 px-4 py-2 text-sm font-medium backdrop-blur">
             <CheckCircle size={18} />
             Analysis Completed
           </div>
 
-          <h1 className="text-3xl font-bold">
+          <h1 className="font-display text-3xl font-bold">
             Resume Analysis Report
           </h1>
 
-          <div className="mt-4 flex items-center gap-3 text-blue-100">
+          <div className="mt-4 flex items-center gap-3 text-emerald-950/70">
             <FileText size={18} />
             <span>
               {analysis.filename || "Uploaded Resume"}
             </span>
           </div>
 
-          <p className="mt-5 max-w-xl text-blue-100">
+          <p className="mt-5 max-w-xl text-emerald-950/70">
             Your resume has been analyzed using ATS scoring,
             semantic matching, keyword analysis and AI recommendations.
           </p>
@@ -58,7 +58,7 @@ function DashboardHeader({ analysis }) {
 
         <div className="text-center">
 
-          <div className="text-6xl font-extrabold">
+          <div className="font-display text-6xl font-extrabold">
             {overall}%
           </div>
 
@@ -70,7 +70,7 @@ function DashboardHeader({ analysis }) {
 
             <button
               onClick={() => generatePDF(analysis)}
-              className="flex items-center gap-2 rounded-xl bg-white px-5 py-3 font-semibold text-blue-700 transition hover:scale-105"
+              className="flex items-center gap-2 rounded-xl bg-background px-5 py-3 font-semibold text-emerald-300 transition hover:scale-105"
             >
               <Download size={18} />
               Download PDF
@@ -78,7 +78,7 @@ function DashboardHeader({ analysis }) {
 
             <button
               onClick={() => window.location.reload()}
-              className="flex items-center gap-2 rounded-xl border border-white/30 bg-white/10 px-5 py-3 font-semibold backdrop-blur transition hover:bg-white/20"
+              className="flex items-center gap-2 rounded-xl border border-black/20 bg-black/10 px-5 py-3 font-semibold backdrop-blur transition hover:bg-black/20"
             >
               <RotateCcw size={18} />
               Analyze Again

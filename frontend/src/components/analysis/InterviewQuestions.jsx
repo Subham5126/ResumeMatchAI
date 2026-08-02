@@ -12,38 +12,33 @@ function InterviewQuestions({ questions }) {
   const difficultyConfig = {
     easy: {
       title: "Easy",
-      color: "text-green-600",
-      bg: "bg-green-50",
-      border: "border-green-200",
-      icon: "🟢",
+      color: "text-emerald-300",
+      bg: "bg-emerald-500/10",
+      border: "border-emerald-500/20",
     },
     medium: {
       title: "Medium",
-      color: "text-yellow-600",
-      bg: "bg-yellow-50",
-      border: "border-yellow-200",
-      icon: "🟡",
+      color: "text-amber-300",
+      bg: "bg-amber-500/10",
+      border: "border-amber-500/20",
     },
     hard: {
       title: "Hard",
-      color: "text-red-600",
-      bg: "bg-red-50",
-      border: "border-red-200",
-      icon: "🔴",
+      color: "text-rose-300",
+      bg: "bg-rose-500/10",
+      border: "border-rose-500/20",
     },
     behavioral: {
       title: "Behavioral",
-      color: "text-purple-600",
-      bg: "bg-purple-50",
-      border: "border-purple-200",
-      icon: "💬",
+      color: "text-teal-300",
+      bg: "bg-teal-500/10",
+      border: "border-teal-500/20",
     },
     project: {
       title: "Project",
-      color: "text-blue-600",
-      bg: "bg-blue-50",
-      border: "border-blue-200",
-      icon: "🚀",
+      color: "text-cyan-300",
+      bg: "bg-cyan-500/10",
+      border: "border-cyan-500/20",
     },
   };
 
@@ -61,13 +56,13 @@ function InterviewQuestions({ questions }) {
   );
 
   return (
-    <div className="bg-white rounded-3xl shadow-xl border border-gray-200 overflow-hidden mt-8">
-      <div className="px-8 py-6 border-b border-gray-100 flex items-center justify-between">
-        <h2 className="text-3xl font-bold text-gray-900">
-          🎤 AI Interview Questions
+    <div className="bg-card rounded-3xl shadow-sm border border-border overflow-hidden mt-8">
+      <div className="px-8 py-6 border-b border-border flex items-center justify-between">
+        <h2 className="font-display text-3xl font-bold text-foreground">
+          AI Interview Questions
         </h2>
 
-        <span className="text-gray-500 text-sm">
+        <span className="text-muted-foreground text-sm">
           {totalQuestions} Questions
         </span>
       </div>
@@ -77,10 +72,9 @@ function InterviewQuestions({ questions }) {
           const config =
             difficultyConfig[difficulty.toLowerCase()] || {
               title: difficulty,
-              color: "text-blue-600",
-              bg: "bg-blue-50",
-              border: "border-blue-200",
-              icon: "📘",
+              color: "text-cyan-300",
+              bg: "bg-cyan-500/10",
+              border: "border-cyan-500/20",
             };
 
           return (
@@ -88,7 +82,6 @@ function InterviewQuestions({ questions }) {
               <div
                 className={`inline-flex items-center gap-2 px-4 py-2 rounded-full font-semibold mb-4 ${config.bg} ${config.color}`}
               >
-                <span>{config.icon}</span>
                 <span>
                   {config.title} ({list.length})
                 </span>

@@ -1,4 +1,63 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+
+  /* Base surfaces */
+  --color-background: #050b0a;
+  --color-foreground: #e6f4ef;
+
+  --color-card: #0b1512;
+  --color-card-foreground: #e6f4ef;
+
+  --color-elevated: #10201b;
+
+  --color-muted: #10201b;
+  --color-muted-foreground: #86a69c;
+
+  --color-border: #1c2f29;
+  --color-input: #16241f;
+  --color-ring: #2dd4bf;
+
+  /* Brand */
+  --color-primary: #10b981;
+  --color-primary-foreground: #04110d;
+
+  --color-accent: #2dd4bf;
+  --color-accent-foreground: #04110d;
+
+  --color-secondary: #fbbf24;
+  --color-secondary-foreground: #1a1206;
+
+  --radius: 1rem;
+}
+
 html {
   scroll-behavior: smooth;
+  background-color: var(--color-background);
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom scrollbar for the dark theme */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+::-webkit-scrollbar-thumb {
+  background: #1f3a33;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2b544a;
 }

@@ -67,7 +67,7 @@ function Home() {
     <>
       <Navbar />
 
-      <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-100">
+      <main className="min-h-screen bg-background">
         <PageContainer>
 
           {/* ================= HERO ================= */}
@@ -101,19 +101,17 @@ function Home() {
               <button
                 onClick={handleAnalyze}
                 disabled={loading}
-                className={`flex items-center gap-3 rounded-xl px-10 py-3 font-semibold text-white shadow-lg transition-all duration-300 ${
+                className={`flex items-center gap-3 rounded-xl px-10 py-4 font-display text-lg font-bold tracking-tight transition-all duration-300 ${
                   loading
-                    ? "cursor-not-allowed bg-gray-400"
-                    : "bg-gradient-to-r from-blue-600 to-indigo-600 hover:scale-105 hover:shadow-xl"
+                    ? "cursor-not-allowed bg-muted text-muted-foreground"
+                    : "bg-gradient-to-r from-emerald-400 to-teal-400 text-primary-foreground shadow-lg shadow-emerald-500/25 hover:scale-105 hover:shadow-xl hover:shadow-emerald-500/40"
                 }`}
               >
                 {loading && (
-                  <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                  <div className="h-5 w-5 animate-spin rounded-full border-2 border-current border-t-transparent" />
                 )}
 
-                {loading
-                  ? "Analyzing Resume..."
-                  : "🚀 Analyze Resume"}
+                {loading ? "Analyzing Resume..." : "Analyze Resume"}
               </button>
             </div>
 

@@ -32,79 +32,58 @@ const steps = [
 export default function HeroWorkflow() {
   return (
     <motion.div
-      animate={{ y: [0, -5, 0] }}
-      transition={{
-        duration: 5,
-        repeat: Infinity,
-      }}
-      className="rounded-3xl border border-slate-200 bg-white p-5 shadow-xl"
+      animate={{ y: [0, -8, 0] }}
+      transition={{ duration: 5, repeat: Infinity }}
+      className="relative rounded-3xl border border-border bg-card/80 p-6 shadow-2xl shadow-black/40 backdrop-blur-sm"
     >
-      {/* Header */}
+      {/* Glow ring */}
+      <div className="pointer-events-none absolute -inset-px rounded-3xl bg-gradient-to-br from-emerald-400/20 via-transparent to-teal-400/10" />
 
-      <div className="mb-5">
+      <div className="relative">
+        {/* Header */}
+        <div className="mb-5 flex items-center justify-between">
+          <div>
+            <h2 className="font-display text-xl font-bold text-foreground">
+              ResumeMatch AI
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              AI Resume Analysis Workflow
+            </p>
+          </div>
+          <span className="flex h-3 w-3">
+            <span className="absolute inline-flex h-3 w-3 animate-ping rounded-full bg-emerald-400/60" />
+            <span className="relative inline-flex h-3 w-3 rounded-full bg-emerald-400" />
+          </span>
+        </div>
 
-        <h2 className="text-xl font-bold text-slate-900">
-          ResumeMatch AI
-        </h2>
+        {/* Steps */}
+        <div className="space-y-3">
+          {steps.map((step) => (
+            <motion.div
+              key={step.title}
+              whileHover={{ x: 4 }}
+              transition={{ type: "spring", stiffness: 300 }}
+              className="flex items-center gap-3 rounded-xl border border-border bg-elevated p-3"
+            >
+              <div className="rounded-lg bg-gradient-to-br from-emerald-400 to-teal-500 p-3 text-primary-foreground">
+                {step.icon}
+              </div>
 
-        <p className="text-sm text-slate-500">
-          AI Resume Analysis Workflow
-        </p>
+              <div>
+                <h3 className="font-semibold text-foreground">{step.title}</h3>
+                <p className="text-xs text-muted-foreground">{step.subtitle}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
 
+        {/* Footer */}
+        <div className="mt-5 rounded-xl border border-emerald-400/30 bg-emerald-400/10 p-3 text-center">
+          <p className="text-sm font-medium text-emerald-300">
+            Complete analysis in under 5 seconds
+          </p>
+        </div>
       </div>
-
-      {/* Steps */}
-
-      <div className="space-y-3">
-
-        {steps.map((step) => (
-
-          <motion.div
-            key={step.title}
-            whileHover={{
-              x: 4,
-            }}
-            transition={{
-              type: "spring",
-              stiffness: 300,
-            }}
-            className="flex items-center gap-3 rounded-xl bg-slate-50 p-3"
-          >
-
-            <div className="rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 p-3 text-white">
-
-              {step.icon}
-
-            </div>
-
-            <div>
-
-              <h3 className="font-semibold text-slate-900">
-                {step.title}
-              </h3>
-
-              <p className="text-xs text-slate-500">
-                {step.subtitle}
-              </p>
-
-            </div>
-
-          </motion.div>
-
-        ))}
-
-      </div>
-
-      {/* Footer */}
-
-      <div className="mt-5 rounded-xl bg-blue-50 p-3 text-center">
-
-        <p className="text-sm font-medium text-blue-700">
-          ⚡ Complete analysis in under 5 seconds
-        </p>
-
-      </div>
-
     </motion.div>
   );
 }

@@ -2,41 +2,30 @@ import { FaFileUpload, FaFilePdf } from "react-icons/fa";
 
 function ResumeUpload({ resumeFile, setResumeFile }) {
   return (
-    <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-5">
-
-      <h2 className="text-xl font-bold text-gray-800 mb-4">
-        📄 Upload Resume
+    <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+      <h2 className="mb-4 flex items-center gap-2 font-display text-xl font-bold text-foreground">
+        <FaFileUpload className="text-emerald-400" />
+        Upload Resume
       </h2>
 
-      <label className="border-2 border-dashed border-blue-400 rounded-xl h-44 flex flex-col justify-center items-center cursor-pointer hover:bg-blue-50 transition">
-
+      <label className="flex h-44 cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-emerald-400/40 bg-elevated transition hover:border-emerald-400 hover:bg-emerald-400/5">
         {resumeFile ? (
           <>
-            <FaFilePdf
-              size={42}
-              className="text-red-500 mb-3"
-            />
+            <FaFilePdf size={42} className="mb-3 text-rose-400" />
 
-            <p className="font-semibold text-gray-800">
-              {resumeFile.name}
-            </p>
+            <p className="font-semibold text-foreground">{resumeFile.name}</p>
 
-            <span className="text-sm text-green-600 mt-1">
-              ✓ Resume Uploaded
+            <span className="mt-1 text-sm text-emerald-400">
+              Resume Uploaded
             </span>
           </>
         ) : (
           <>
-            <FaFileUpload
-              size={38}
-              className="text-blue-600 mb-3"
-            />
+            <FaFileUpload size={38} className="mb-3 text-emerald-400" />
 
-            <p className="font-medium text-gray-700">
-              Drop Resume Here
-            </p>
+            <p className="font-medium text-foreground">Drop Resume Here</p>
 
-            <p className="text-sm text-gray-500 mt-1">
+            <p className="mt-1 text-sm text-muted-foreground">
               PDF or DOCX (Max 5 MB)
             </p>
           </>
@@ -48,9 +37,7 @@ function ResumeUpload({ resumeFile, setResumeFile }) {
           accept=".pdf,.doc,.docx"
           onChange={(e) => setResumeFile(e.target.files[0])}
         />
-
       </label>
-
     </div>
   );
 }
