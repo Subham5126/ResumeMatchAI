@@ -1,5 +1,3 @@
-import { motion } from "framer-motion";
-
 import BackgroundEffects from "./BackgroundEffects";
 import HeroContent from "./HeroContent";
 import HeroWorkflow from "./HeroWorkflow";
@@ -8,37 +6,22 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative overflow-hidden bg-gradient-to-b from-slate-50 via-white to-white py-14 lg:py-16"
+      className="relative overflow-hidden bg-slate-950 text-white py-6 lg:py-10 border-b border-slate-800/80 bg-grid-mesh"
     >
       <BackgroundEffects />
 
-      <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
-
-        <div className="grid items-center gap-10 lg:grid-cols-2">
-
-          {/* Left */}
-
-          <motion.div
-            initial={{ opacity: 0, x: -25 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-          >
+      <div className="relative mx-auto max-w-[1650px] px-4 sm:px-8 lg:px-12">
+        <div className="grid items-center gap-6 lg:grid-cols-12">
+          {/* Left Hero Content (7 Cols) */}
+          <div className="lg:col-span-7">
             <HeroContent />
-          </motion.div>
+          </div>
 
-          {/* Right */}
-
-          <motion.div
-            initial={{ opacity: 0, x: 25 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7 }}
-            className="mx-auto w-full max-w-md"
-          >
+          {/* Right Interactive Visual Card (5 Cols) */}
+          <div className="lg:col-span-5 w-full">
             <HeroWorkflow />
-          </motion.div>
-
+          </div>
         </div>
-
       </div>
     </section>
   );

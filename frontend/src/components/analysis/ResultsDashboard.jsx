@@ -1,5 +1,5 @@
-import { motion } from "framer-motion";
-import { Lightbulb } from "lucide-react";
+import { useState } from "react";
+import { Lightbulb, LayoutDashboard, ShieldCheck, Sparkles, GraduationCap } from "lucide-react";
 import ResumeRewrite from "./ResumeRewrite";
 import DashboardHeader from "./DashboardHeader";
 import ScoreCard from "./ScoreCard";
@@ -11,6 +11,8 @@ import LearningRoadmap from "../roadmap/LearningRoadmap";
 import CoverLetter from "./CoverLetter";
 
 function ResultsDashboard({ analysis }) {
+  const [activeTab, setActiveTab] = useState("overview");
+
   if (!analysis) return null;
 
   const scoreCards = [
@@ -20,10 +22,7 @@ function ResultsDashboard({ analysis }) {
     },
     {
       title: "ATS Score",
-      score:
-        analysis.ats_report?.ats_score ??
-        analysis.overall_score ??
-        0,
+      score: analysis.ats_report?.ats_score ?? analysis.overall_score ?? 0,
     },
     {
       title: "Keyword Match",
@@ -31,192 +30,150 @@ function ResultsDashboard({ analysis }) {
     },
     {
       title: "Semantic Match",
-      score:
-        analysis.semantic_analysis?.semantic_score ?? 0,
+      score: analysis.semantic_analysis?.semantic_score ?? 0,
     },
   ];
 
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="space-y-10"
-    >
-      {/* ================= HEADER ================= */}
+  const tabs = [
+    { id: "overview", label: "Overview & Scores", icon: LayoutDashboard },
+    { id: "audit", label: "ATS & Skill Audit", icon: ShieldCheck },
+    { id: "tools", label: "AI Rewriter & Cover Letter", icon: Sparkles },
+    { id: "career", label: "Interview & Roadmap", icon: GraduationCap },
+  ];
 
+  return (
+    <div className="space-y-6">
+      {/* Header */}
       <DashboardHeader analysis={analysis} />
 
-      {/* ================= SCORE CARDS ================= */}
+      {/* Tab Workspace Navigation */}
+      <div className="flex flex-wrap items-center justify-between gap-3 border border-slate-800 bg-slate-900/90 p-1.5 rounded-xl shadow-xl backdrop-blur-md">
+        <div className="flex flex-wrap items-center gap-1">
+          {tabs.map((tab) => {
+            const Icon = tab.icon;
+            const isActive = activeTab === tab.id;
 
-      <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-        {scoreCards.map((card, index) => (
-          <motion.div
-            key={card.title}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              delay: index * 0.08,
-            }}
-          >
-            <ScoreCard
-              title={card.title}
-              score={card.score}
-            />
-          </motion.div>
-        ))}
-      </section>
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => setActiveTab(tab.id)}
+                className={`inline-flex items-center gap-2 rounded-lg px-3.5 py-2 text-xs font-bold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 ${
+                  isActive
+                    ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
+                    : "text-slate-400 hover:bg-slate-800 hover:text-white"
+                }`}
+              >
+                <Icon size={14} className={isActive ? "text-white" : "text-slate-400"} />
+                <span>{tab.label}</span>
+              </button>
+            );
+          })}
+        </div>
 
-      {/* ================= ATS REPORT ================= */}
+        <div className="hidden md:flex items-center gap-2 text-[11px] font-semibold text-slate-400 px-3">
+          <span>Targeted Analysis • 4 Modules Unlocked</span>
+        </div>
+      </div>
 
-      {analysis.ats_report && (
-        <section>
-          <ATSReport report={analysis.ats_report} />
-        </section>
-      )}
-
-      {/* ================= SKILLS ================= */}
-
-      <section>
-        <SkillsSection
-          matched={
-            analysis.keyword_analysis?.matched_skills ?? []
-          }
-          missing={
-            analysis.keyword_analysis?.missing_skills ?? []
-          }
-        />
-      </section>
-
-      {/* ================= AI RECOMMENDATIONS ================= */}
-
-      {analysis.recommendations?.length > 0 && (
-        <section className="space-y-6">
-
-          {/* Header */}
-
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-
-            <div className="flex items-center gap-4">
-
-              <div className="rounded-2xl bg-indigo-100 p-3">
-                <Lightbulb
-                  size={24}
-                  className="text-indigo-600"
-                />
-              </div>
-
-              <div>
-
-                <h2 className="text-3xl font-bold text-slate-900">
-                  AI Recommendations
-                </h2>
-
-                <p className="mt-1 text-slate-500">
-                  Personalized suggestions to improve your
-                  resume for this specific job.
-                </p>
-
-              </div>
-
-            </div>
-
-            <div className="inline-flex items-center rounded-full bg-indigo-100 px-4 py-2 text-sm font-semibold text-indigo-700">
-              {analysis.recommendations.length} Suggestions
-            </div>
-
+      {/* Tab 1: Overview & Scores */}
+      {activeTab === "overview" && (
+        <div className="space-y-6 animate-fadeIn">
+          {/* Score Cards Grid */}
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {scoreCards.map((card) => (
+              <ScoreCard key={card.title} title={card.title} score={card.score} />
+            ))}
           </div>
 
-          {/* Cards */}
+          {/* AI Recommendations */}
+          {analysis.recommendations?.length > 0 && (
+            <div className="rounded-2xl border border-slate-800 bg-slate-900/90 p-6 shadow-xl backdrop-blur-md">
+              <div className="mb-5 flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-800 pb-3 gap-2">
+                <div className="flex items-center gap-2.5">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                    <Lightbulb size={16} />
+                  </div>
+                  <div>
+                    <h2 className="text-base font-bold text-white">
+                      Priority AI Recommendations
+                    </h2>
+                    <p className="text-xs text-slate-400">
+                      Actionable steps to increase recruiter engagement and interview callbacks.
+                    </p>
+                  </div>
+                </div>
 
-          <div className="grid gap-6 lg:grid-cols-2">
+                <span className="rounded-md border border-slate-800 bg-slate-950 px-2 py-0.5 text-xs font-semibold text-slate-300 self-start sm:self-auto">
+                  {analysis.recommendations.length} Action Items
+                </span>
+              </div>
 
-            {analysis.recommendations.map(
-              (recommendation, index) => (
-                <motion.div
-                  key={index}
-                  initial={{
-                    opacity: 0,
-                    y: 20,
-                  }}
-                  animate={{
-                    opacity: 1,
-                    y: 0,
-                  }}
-                  transition={{
-                    delay: index * 0.08,
-                  }}
-                >
-                  <RecommendationCard
-                    recommendation={recommendation}
-                  />
-                </motion.div>
-              )
-            )}
-
-          </div>
-
-        </section>
+              <div className="grid gap-4 md:grid-cols-2">
+                {analysis.recommendations.map((recommendation, index) => (
+                  <RecommendationCard key={index} recommendation={recommendation} />
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
       )}
 
-      {/* ================= RESUME REWRITE ================= */}
+      {/* Tab 2: ATS & Skill Audit */}
+      {activeTab === "audit" && (
+        <div className="space-y-6 animate-fadeIn">
+          {analysis.ats_report && <ATSReport report={analysis.ats_report} />}
 
-        <section>
-            <ResumeRewrite analysis={analysis} />
-        </section>
-
-      {/* ================= COVER LETTER ================= */}
-
-        <section>
-            <CoverLetter analysis={analysis} />
-        </section>
-
-        <section>
-            <InterviewQuestions
-                questions={analysis.interview_questions}
-            />
-        </section>
-
-      {/* ================= INTERVIEW QUESTIONS ================= */}
-
-      {analysis.interview_questions &&
-        Object.keys(analysis.interview_questions).length >
-          0 && (
-          <section>
-            <InterviewQuestions
-              questions={analysis.interview_questions}
-            />
-          </section>
-        )}
-
-      {/* ================= LEARNING ROADMAP ================= */}
-
-      {analysis.learning_roadmap && (
-        <section>
-          <LearningRoadmap
-            roadmap={analysis.learning_roadmap}
+          <SkillsSection
+            matched={analysis.keyword_analysis?.matched_skills ?? []}
+            missing={analysis.keyword_analysis?.missing_skills ?? []}
           />
-        </section>
+        </div>
       )}
-      <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-center">
-        <h3 className="text-xl font-bold text-slate-800">
-          🎉 Thank you for using ResumeMatch AI!
-        </h3>
 
-        <p className="mt-2 text-slate-600">
-          We'd appreciate your feedback. It only takes a minute and helps us improve.
-        </p>
+      {/* Tab 3: AI Tools */}
+      {activeTab === "tools" && (
+        <div className="space-y-6 animate-fadeIn">
+          <ResumeRewrite analysis={analysis} />
+          <CoverLetter analysis={analysis} />
+        </div>
+      )}
+
+      {/* Tab 4: Career & Interview */}
+      {activeTab === "career" && (
+        <div className="space-y-6 animate-fadeIn">
+          {analysis.interview_questions && Object.keys(analysis.interview_questions).length > 0 && (
+            <InterviewQuestions questions={analysis.interview_questions} />
+          )}
+
+          {analysis.learning_roadmap && (
+            <LearningRoadmap roadmap={analysis.learning_roadmap} />
+          )}
+        </div>
+      )}
+
+      {/* Footer Feedback Box */}
+      <div className="rounded-2xl border border-slate-800 bg-slate-900/90 p-5 text-center shadow-xl flex flex-col sm:flex-row items-center justify-between gap-3 backdrop-blur-md">
+        <div className="text-left">
+          <h3 className="text-xs font-bold text-white">
+            How was your ResumeMatch AI analysis experience?
+          </h3>
+          <p className="text-xs text-slate-400 mt-0.5">
+            Your feedback helps us continuously refine our Groq AI extraction models.
+          </p>
+        </div>
 
         <a
           href="https://docs.google.com/forms/d/e/1FAIpQLSdF2lEDeVLRHAfcy-ml5sMbvjpAIqp6XWB5t_0euoHaYY8URg/viewform"
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-5 inline-flex rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white hover:bg-blue-700"
+          className="inline-flex items-center gap-1.5 rounded-lg border border-slate-800 bg-slate-950 px-4 py-2 text-xs font-semibold text-slate-300 hover:bg-slate-800 transition-colors shrink-0"
         >
-          ⭐ Share Feedback
+          <span>Share Anonymous Feedback</span>
+          <span>→</span>
         </a>
       </div>
-    </motion.div>
+    </div>
   );
 }
 

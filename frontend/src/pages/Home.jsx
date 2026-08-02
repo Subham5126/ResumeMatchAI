@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import Navbar from "../components/layout/Navbar";
 import Hero from "../components/hero/Hero";
 import Footer from "../components/layout/Footer";
@@ -15,10 +14,10 @@ import AnalysisLoader from "../components/analysis/AnalysisLoader";
 import ResultsDashboard from "../components/analysis/ResultsDashboard";
 
 import ChatBot from "../components/chat/ChatBot";
-
 import PageContainer from "../components/common/PageContainer";
-
+import CursorSpotlight from "../components/common/CursorSpotlight";
 import api from "../services/api";
+import { Sparkles, ArrowDown, CheckCircle } from "lucide-react";
 
 function Home() {
   const [resumeFile, setResumeFile] = useState(null);
@@ -27,8 +26,8 @@ function Home() {
   const [loading, setLoading] = useState(false);
 
   const handleAnalyze = async () => {
-    if (!resumeFile || !jobDescription) {
-      alert("Please upload a resume and enter a job description.");
+    if (!resumeFile || !jobDescription.trim()) {
+      toast.error("Please upload a resume file and paste a job description.");
       return;
     }
 
@@ -47,7 +46,6 @@ function Home() {
       });
 
       setAnalysis(response.data);
-
       toast.success("Resume analyzed successfully!");
 
       setTimeout(() => {
@@ -57,35 +55,55 @@ function Home() {
       }, 300);
     } catch (error) {
       console.error(error);
-      toast.error("Analysis Failed");
+      toast.error("Analysis Failed. Please check backend connection.");
     } finally {
       setLoading(false);
     }
   };
 
+  const scrollToResults = () => {
+    document.getElementById("results")?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
-    <>
+    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between bg-grid-mesh">
       <Navbar />
 
-      <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-100">
-        <PageContainer>
+      <main className="flex-1">
+        {/* Full-width Dark Hero Section */}
+        <section id="home" className="scroll-mt-14">
+          <Hero />
+        </section>
 
-          {/* ================= HERO ================= */}
+        {/* Main Content Area */}
+        <PageContainer className="py-10 space-y-12">
+          {/* Analyze Upload Section */}
+          <section id="analyze" className="scroll-mt-20">
+            <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800/80 pb-4">
+              <div>
+                <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
+                  AI Resume Matcher Workspace
+                </h2>
+                <p className="text-sm sm:text-base text-slate-300 mt-1">
+                  Upload your resume and target job requirements to generate a complete ATS & skill compatibility audit.
+                </p>
+              </div>
 
-          <section
-            id="home"
-            className="scroll-mt-20"
-          >
-            <Hero />
-          </section>
+              {analysis && (
+                <button
+                  type="button"
+                  onClick={scrollToResults}
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 text-xs sm:text-sm font-bold text-emerald-400 hover:bg-emerald-500/20 transition-colors self-start sm:self-auto"
+                >
+                  <CheckCircle size={16} />
+                  <span>View Analysis Results</span>
+                  <ArrowDown size={16} />
+                </button>
+              )}
+            </div>
 
-          {/* ================= ANALYZE ================= */}
-
-          <section
-            id="analyze"
-            className="scroll-mt-20 py-16"
-          >
-            <div className="grid gap-6 lg:grid-cols-2">
+            {/* Input Grid */}
+            <div className="grid gap-6 md:grid-cols-2 items-stretch">
               <ResumeUpload
                 resumeFile={resumeFile}
                 setResumeFile={setResumeFile}
@@ -97,80 +115,82 @@ function Home() {
               />
             </div>
 
-            <div className="mt-8 flex justify-center">
+            {/* Action Bar */}
+            <div className="mt-8 flex flex-col items-center justify-center">
               <button
+                type="button"
                 onClick={handleAnalyze}
                 disabled={loading}
-                className={`flex items-center gap-3 rounded-xl px-10 py-3 font-semibold text-white shadow-lg transition-all duration-300 ${
+                className={`inline-flex items-center justify-center gap-2.5 rounded-xl px-10 py-4 text-base font-extrabold text-white shadow-xl transition-all ${
                   loading
-                    ? "cursor-not-allowed bg-gray-400"
-                    : "bg-gradient-to-r from-blue-600 to-indigo-600 hover:scale-105 hover:shadow-xl"
+                    ? "bg-slate-800 cursor-not-allowed opacity-70 border border-slate-700"
+                    : "bg-gradient-to-r from-indigo-600 via-indigo-500 to-violet-600 btn-glow-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
                 }`}
               >
-                {loading && (
-                  <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                {loading ? (
+                  <>
+                    <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                    <span>Analyzing Resume with Groq AI...</span>
+                  </>
+                ) : (
+                  <>
+                    <Sparkles size={20} className="text-amber-300 animate-pulse" />
+                    <span>Run AI Deep Analysis →</span>
+                  </>
                 )}
-
-                {loading
-                  ? "Analyzing Resume..."
-                  : "🚀 Analyze Resume"}
               </button>
             </div>
 
+            {/* Loading Indicator */}
             {loading && (
-              <div className="mt-10">
+              <div className="mt-8">
                 <AnalysisLoader />
               </div>
             )}
 
+            {/* Pre-Analysis Feature Checklist */}
+            {!loading && !analysis && (
+              <div className="mt-8 rounded-xl border border-slate-800 bg-slate-900/80 p-5 text-center shadow-lg">
+                <p className="text-sm font-bold text-slate-200">
+                  Ready to optimize your resume? Upload your resume and paste a job description above. We'll automatically generate:
+                </p>
+                <div className="mt-3 flex flex-wrap justify-center gap-2.5 text-xs font-semibold text-slate-300">
+                  <span className="rounded-md border border-slate-800 bg-slate-950/70 px-3 py-1.5">✓ ATS Compatibility</span>
+                  <span className="rounded-md border border-slate-800 bg-slate-950/70 px-3 py-1.5">✓ Skill Match Score</span>
+                  <span className="rounded-md border border-slate-800 bg-slate-950/70 px-3 py-1.5">✓ Missing Keywords</span>
+                  <span className="rounded-md border border-slate-800 bg-slate-950/70 px-3 py-1.5">✓ AI Recommendations</span>
+                  <span className="rounded-md border border-slate-800 bg-slate-950/70 px-3 py-1.5">✓ Interview Preparation</span>
+                </div>
+              </div>
+            )}
+
+            {/* Results Dashboard */}
             {!loading && analysis && (
-              <div
-                id="results"
-                className="mt-12"
-              >
+              <div id="results" className="mt-10 scroll-mt-20">
                 <ResultsDashboard analysis={analysis} />
               </div>
             )}
           </section>
 
-          {/* ================= FEATURES ================= */}
-
-          <section
-            id="features"
-            className="scroll-mt-20 py-16"
-          >
+          {/* Showcase Sections */}
+          <section id="features" className="scroll-mt-20 border-t border-slate-800/80 pt-8">
             <Features />
           </section>
 
-          {/* ================= ABOUT ================= */}
-
-          <section
-            id="about"
-            className="scroll-mt-20 py-16"
-          >
+          <section id="about" className="scroll-mt-20 border-t border-slate-800/80 pt-8">
             <About />
           </section>
 
-          {/* ================= TECH STACK ================= */}
-
-          <section
-            id="tech-stack"
-            className="py-16"
-          >
+          <section id="tech" className="scroll-mt-20 border-t border-slate-800/80 pt-8">
             <TechStack />
           </section>
-
-          {/* ================= FOOTER ================= */}
-
-          <Footer />
-
         </PageContainer>
       </main>
 
-      {/* ================= AI CHATBOT ================= */}
-
+      <Footer />
       <ChatBot analysis={analysis} />
-    </>
+      <CursorSpotlight />
+    </div>
   );
 }
 

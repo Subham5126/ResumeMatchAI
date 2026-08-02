@@ -1,10 +1,4 @@
-import { motion } from "framer-motion";
-import {
-  ShieldCheck,
-  CheckCircle2,
-  AlertTriangle,
-  Sparkles,
-} from "lucide-react";
+import { ShieldCheck, CheckCircle2, AlertTriangle, Sparkles } from "lucide-react";
 
 function ATSReport({ report }) {
   if (!report) return null;
@@ -20,156 +14,110 @@ function ATSReport({ report }) {
   const getStatus = () => {
     if (score >= 85)
       return {
-        text: "Excellent • Ready for Most ATS Systems",
-        color: "text-green-600",
-        badge: "bg-green-100 text-green-700",
+        text: "Pass • Formatted for Top Applicant Tracking Systems",
+        badge: "bg-emerald-500/10 text-emerald-300 border-emerald-500/30",
       };
 
     if (score >= 70)
       return {
-        text: "Good • Minor Improvements Recommended",
-        color: "text-amber-600",
-        badge: "bg-amber-100 text-amber-700",
+        text: "Moderate • Minor Formatting Revisions Suggested",
+        badge: "bg-amber-500/10 text-amber-300 border-amber-500/30",
       };
 
     return {
-      text: "Needs Improvement",
-      color: "text-red-600",
-      badge: "bg-red-100 text-red-700",
+      text: "Action Needed • Reformatting Required",
+      badge: "bg-rose-500/10 text-rose-300 border-rose-500/30",
     };
   };
 
   const status = getStatus();
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 25 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.45 }}
-      viewport={{ once: true }}
-      className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden"
-    >
+    <div className="rounded-2xl border border-slate-800 bg-slate-900/90 p-6 shadow-xl backdrop-blur-md">
       {/* Header */}
-
-      <div className="bg-gradient-to-r from-slate-900 to-slate-800 px-6 py-5 text-white flex items-center justify-between">
-        <div>
-          <div className="flex items-center gap-2">
-            <ShieldCheck size={22} />
-
-            <h2 className="text-xl font-bold">
-              ATS Compatibility
-            </h2>
+      <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-800 pb-4 gap-4">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 shadow-2xs">
+            <ShieldCheck size={20} />
           </div>
-
-          <p className="mt-2 text-sm text-slate-300">
-            {status.text}
-          </p>
+          <div>
+            <h2 className="text-base font-bold text-white">
+              ATS Readability & Format Audit
+            </h2>
+            <p className="text-xs text-slate-400">
+              {status.text}
+            </p>
+          </div>
         </div>
 
-        <div
-          className={`rounded-xl px-5 py-3 text-center ${status.badge}`}
-        >
-          <div className="text-3xl font-bold">
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-semibold text-slate-400">ATS Compliance:</span>
+          <span className={`rounded-md border px-3 py-1 text-sm font-extrabold ${status.badge}`}>
             {score}%
-          </div>
-
-          <div className="text-xs font-semibold">
-            ATS Score
-          </div>
+          </span>
         </div>
       </div>
 
-      <div className="p-6 space-y-6">
-
-        {/* Strengths + Improvements */}
-
-        <div className="grid gap-5 md:grid-cols-2">
-
-          {/* Strengths */}
-
-          <div className="rounded-xl border border-green-200 bg-green-50 p-5">
-
-            <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-green-700">
-              <CheckCircle2 size={20} />
-              Strengths
+      <div className="space-y-6">
+        {/* Checks Grid */}
+        <div className="grid gap-6 lg:grid-cols-2">
+          {/* Passed Checks */}
+          <div className="rounded-xl border border-slate-800 bg-slate-950/60 p-4">
+            <h3 className="mb-3 text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+              <CheckCircle2 size={16} className="text-emerald-400" />
+              <span>Passed Formatting Checks ({strengths.length})</span>
             </h3>
 
-            <div className="space-y-3">
+            <div className="space-y-2">
               {strengths.length > 0 ? (
                 strengths.map((item, index) => (
-                  <div
-                    key={index}
-                    className="flex items-start gap-2 text-sm text-slate-700"
-                  >
-                    <CheckCircle2
-                      size={16}
-                      className="mt-0.5 text-green-500 flex-shrink-0"
-                    />
-
+                  <div key={index} className="flex items-start gap-2 text-xs text-slate-300">
+                    <span className="mt-1 h-1.5 w-1.5 rounded-full bg-emerald-400 shrink-0" />
                     <span>{item}</span>
                   </div>
                 ))
               ) : (
-                <p className="text-sm text-slate-500">
-                  No strengths identified.
-                </p>
+                <p className="text-xs text-slate-500">No passed checks detected.</p>
               )}
             </div>
-
           </div>
 
-          {/* Improvements */}
-
-          <div className="rounded-xl border border-amber-200 bg-amber-50 p-5">
-
-            <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-amber-700">
-              <AlertTriangle size={20} />
-              Improvements
+          {/* Actionable Improvements */}
+          <div className="rounded-xl border border-slate-800 bg-slate-950/60 p-4">
+            <h3 className="mb-3 text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+              <AlertTriangle size={16} className="text-amber-400" />
+              <span>Suggested Improvements ({improvements.length})</span>
             </h3>
 
-            <div className="space-y-3">
+            <div className="space-y-2">
               {improvements.length > 0 ? (
                 improvements.map((item, index) => (
-                  <div
-                    key={index}
-                    className="flex items-start gap-2 text-sm text-slate-700"
-                  >
-                    <AlertTriangle
-                      size={16}
-                      className="mt-0.5 text-amber-500 flex-shrink-0"
-                    />
-
+                  <div key={index} className="flex items-start gap-2 text-xs text-slate-300">
+                    <span className="mt-1 h-1.5 w-1.5 rounded-full bg-amber-400 shrink-0" />
                     <span>{item}</span>
                   </div>
                 ))
               ) : (
-                <p className="text-sm text-slate-500">
-                  No major improvements required 🎉
-                </p>
+                <p className="text-xs text-slate-500">No formatting issues detected.</p>
               )}
             </div>
-
           </div>
-
         </div>
 
-        {/* AI Summary */}
-
-        <div className="rounded-xl border border-blue-200 bg-blue-50 p-5">
-
-          <h3 className="mb-3 flex items-center gap-2 text-lg font-semibold text-blue-700">
-            <Sparkles size={20} />
-            AI Summary
-          </h3>
-
-          <p className="text-sm leading-7 text-slate-700">
-            {report.feedback}
-          </p>
-
-        </div>
-
+        {/* AI Audit Feedback */}
+        {report.feedback && (
+          <div className="rounded-xl border border-slate-800 bg-slate-950/80 p-4">
+            <div className="mb-2 flex items-center gap-1.5 text-xs font-bold text-white">
+              <Sparkles size={14} className="text-indigo-400" />
+              <span>Executive ATS Audit Summary</span>
+            </div>
+            <p className="text-xs leading-relaxed text-slate-300">
+              {report.feedback}
+            </p>
+          </div>
+        )}
       </div>
-    </motion.div>
+    </div>
   );
 }
 

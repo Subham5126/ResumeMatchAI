@@ -3,47 +3,37 @@ import { ChevronDown, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 function InterviewQuestions({ questions }) {
+  const [openQuestion, setOpenQuestion] = useState(null);
+
   if (!questions || typeof questions !== "object") {
     return null;
   }
 
-  const [openQuestion, setOpenQuestion] = useState(null);
-
   const difficultyConfig = {
     easy: {
       title: "Easy",
-      color: "text-green-600",
-      bg: "bg-green-50",
-      border: "border-green-200",
-      icon: "🟢",
+      color: "text-emerald-400",
+      bg: "bg-emerald-500/10 border-emerald-500/30",
     },
     medium: {
       title: "Medium",
-      color: "text-yellow-600",
-      bg: "bg-yellow-50",
-      border: "border-yellow-200",
-      icon: "🟡",
+      color: "text-amber-400",
+      bg: "bg-amber-500/10 border-amber-500/30",
     },
     hard: {
       title: "Hard",
-      color: "text-red-600",
-      bg: "bg-red-50",
-      border: "border-red-200",
-      icon: "🔴",
+      color: "text-rose-400",
+      bg: "bg-rose-500/10 border-rose-500/30",
     },
     behavioral: {
       title: "Behavioral",
-      color: "text-purple-600",
-      bg: "bg-purple-50",
-      border: "border-purple-200",
-      icon: "💬",
+      color: "text-purple-400",
+      bg: "bg-purple-500/10 border-purple-500/30",
     },
     project: {
       title: "Project",
-      color: "text-blue-600",
-      bg: "bg-blue-50",
-      border: "border-blue-200",
-      icon: "🚀",
+      color: "text-indigo-400",
+      bg: "bg-indigo-500/10 border-indigo-500/30",
     },
   };
 
@@ -61,64 +51,60 @@ function InterviewQuestions({ questions }) {
   );
 
   return (
-    <div className="bg-white rounded-3xl shadow-xl border border-gray-200 overflow-hidden mt-8">
-      <div className="px-8 py-6 border-b border-gray-100 flex items-center justify-between">
-        <h2 className="text-3xl font-bold text-gray-900">
-          🎤 AI Interview Questions
-        </h2>
+    <div className="rounded-2xl border border-slate-800 bg-slate-900/90 p-6 shadow-xl backdrop-blur-md">
+      <div className="mb-6 flex items-center justify-between border-b border-slate-800 pb-4">
+        <div>
+          <h2 className="text-base font-bold text-white">
+            AI Technical & Behavioral Interview Practice
+          </h2>
+          <p className="text-xs text-slate-400 mt-0.5">
+            Role-tailored interview preparation bank categorized by difficulty level.
+          </p>
+        </div>
 
-        <span className="text-gray-500 text-sm">
+        <span className="rounded-md border border-slate-800 bg-slate-950 px-2.5 py-1 text-xs font-bold text-slate-300">
           {totalQuestions} Questions
         </span>
       </div>
 
-      <div className="p-8 space-y-8">
+      <div className="space-y-6">
         {sections.map(([difficulty, list]) => {
           const config =
             difficultyConfig[difficulty.toLowerCase()] || {
               title: difficulty,
-              color: "text-blue-600",
-              bg: "bg-blue-50",
-              border: "border-blue-200",
-              icon: "📘",
+              color: "text-indigo-400",
+              bg: "bg-indigo-500/10 border-indigo-500/30",
             };
 
           return (
             <div key={difficulty}>
-              <div
-                className={`inline-flex items-center gap-2 px-4 py-2 rounded-full font-semibold mb-4 ${config.bg} ${config.color}`}
-              >
-                <span>{config.icon}</span>
-                <span>
+              <div className="mb-3 flex items-center gap-2">
+                <span className={`rounded-md border px-2.5 py-0.5 text-xs font-bold ${config.bg} ${config.color}`}>
                   {config.title} ({list.length})
                 </span>
               </div>
 
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {list.map((question, index) => {
                   const id = `${difficulty}-${index}`;
 
                   return (
                     <div
                       key={id}
-                      className={`border rounded-xl ${config.border}`}
+                      className="rounded-xl border border-slate-800 bg-slate-950/60 overflow-hidden"
                     >
                       <button
-                        onClick={() =>
-                          setOpenQuestion(
-                            openQuestion === id ? null : id
-                          )
-                        }
-                        className="w-full flex justify-between items-center text-left px-5 py-4 hover:bg-gray-50 transition"
+                        type="button"
+                        onClick={() => setOpenQuestion(openQuestion === id ? null : id)}
+                        className="w-full flex items-center justify-between p-3.5 text-left hover:bg-slate-950 transition-colors"
                       >
-                        <span className="font-medium text-gray-800">
+                        <span className="text-xs font-semibold text-slate-200 pr-3">
                           {question}
                         </span>
-
                         {openQuestion === id ? (
-                          <ChevronDown size={18} />
+                          <ChevronDown size={16} className="text-indigo-400 shrink-0" />
                         ) : (
-                          <ChevronRight size={18} />
+                          <ChevronRight size={16} className="text-slate-500 shrink-0" />
                         )}
                       </button>
 
@@ -128,14 +114,11 @@ function InterviewQuestions({ questions }) {
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: "auto" }}
                             exit={{ opacity: 0, height: 0 }}
-                            transition={{ duration: 0.25 }}
-                            className="overflow-hidden"
+                            transition={{ duration: 0.2 }}
+                            className="border-t border-slate-800 bg-slate-900/60 p-3.5 text-xs leading-relaxed text-slate-300"
                           >
-                            <div className="px-5 pb-5 text-gray-600 text-sm">
-                              Practice answering this question using the STAR
-                              method and include examples from your projects,
-                              internships, or real experience.
-                            </div>
+                            <span className="font-bold text-indigo-400 block mb-1">STAR Method Practice Tip:</span>
+                            Structure your response with: <strong className="text-white">Situation</strong>, <strong className="text-white">Task</strong>, <strong className="text-white">Action</strong>, and quantitative <strong className="text-white">Result</strong> metric.
                           </motion.div>
                         )}
                       </AnimatePresence>

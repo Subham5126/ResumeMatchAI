@@ -49,62 +49,53 @@ const features = [
 
 export default function Features() {
   return (
-    <section className="py-24">
+    <div className="py-12">
       {/* Heading */}
-
       <motion.div
-        initial={{ opacity: 0, y: 25 }}
+        initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
         viewport={{ once: true }}
-        className="text-center"
+        transition={{ duration: 0.5 }}
+        className="text-center max-w-xl mx-auto mb-10"
       >
-        <span className="rounded-full bg-blue-100 px-4 py-2 text-sm font-semibold text-blue-700">
-          Why Choose ResumeMatch AI?
+        <span className="inline-flex items-center gap-1 rounded-md border border-indigo-500/30 bg-indigo-500/10 px-3 py-1 text-xs font-bold text-indigo-300">
+          Core Capabilities
         </span>
 
-        <h2 className="mt-6 text-5xl font-bold text-slate-900">
-          Powerful AI Features
+        <h2 className="mt-3 text-2xl font-black tracking-tight text-white sm:text-3xl">
+          Everything Needed for ATS & Recruiter Success
         </h2>
 
-        <p className="mx-auto mt-5 max-w-2xl text-lg text-slate-600">
-          Everything you need to optimize your resume, improve ATS compatibility,
-          identify skill gaps, and prepare confidently for your next opportunity.
+        <p className="mt-2 text-xs text-slate-400">
+          State-of-the-art vector embedding match algorithms, automated formatting audits, and Groq-powered career copilot.
         </p>
       </motion.div>
 
-      {/* Cards */}
-
-      <div className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+      {/* Cards Grid */}
+      <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         {features.map((feature, index) => (
           <motion.div
             key={feature.title}
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 25 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.45,
-              delay: index * 0.1,
-            }}
             viewport={{ once: true }}
-            whileHover={{
-              y: -8,
-            }}
-            className="group rounded-3xl border border-slate-200 bg-white p-8 shadow-sm transition-all duration-300 hover:shadow-2xl"
+            transition={{ duration: 0.4, delay: index * 0.08 }}
+            className="group rounded-2xl border border-slate-800 bg-slate-900/80 p-6 shadow-xl backdrop-blur-md card-hover-effect cursor-pointer"
           >
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 text-2xl text-white shadow-lg transition-transform duration-300 group-hover:scale-110">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 mb-4 transition-transform duration-300 group-hover:scale-110 group-hover:bg-indigo-500/20">
               {feature.icon}
             </div>
 
-            <h3 className="mt-6 text-2xl font-bold text-slate-900">
+            <h3 className="text-base font-bold text-white transition-colors group-hover:text-indigo-300">
               {feature.title}
             </h3>
 
-            <p className="mt-4 leading-7 text-slate-600">
+            <p className="mt-2 text-xs leading-relaxed text-slate-400">
               {feature.description}
             </p>
           </motion.div>
         ))}
       </div>
-    </section>
+    </div>
   );
 }

@@ -96,179 +96,129 @@ function ResumeRewrite({ analysis }) {
   }, [rewrittenText]);
 
   return (
-  <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
-
-    {/* Header */}
-
-    <div className="mb-8 flex items-center gap-4">
-
-      <div className="rounded-2xl bg-violet-100 p-3">
-        <Sparkles
-          size={24}
-          className="text-violet-600"
-        />
-      </div>
-
-      <div>
-        <h2 className="text-2xl font-bold text-slate-900">
-          Resume Rewrite
-        </h2>
-
-        <p className="text-slate-500">
-          Improve your resume with AI while keeping the original meaning.
-        </p>
-      </div>
-
-    </div>
-
-    {/* Dropdown */}
-
-    <div className="max-w-lg">
-
-      <label className="mb-2 block text-sm font-semibold text-slate-700">
-        Select Section
-      </label>
-
-      <div className="relative">
-
-        <select
-          value={selectedSection}
-          onChange={(e) => setSelectedSection(e.target.value)}
-          className="w-full appearance-none rounded-xl border border-slate-300 bg-white px-4 py-3 pr-12 text-slate-700 shadow-sm transition focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-200"
-        >
-          {sections.map((section) => (
-            <option
-              key={section.value}
-              value={section.value}
-            >
-              {section.label}
-            </option>
-          ))}
-        </select>
-
-        <ChevronDown
-          size={20}
-          className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-500"
-        />
-
-      </div>
-
-    </div>
-
-    {/* Rewrite Button */}
-
-    <div className="mt-6">
-
-      <button
-        onClick={handleRewrite}
-        disabled={loading || !analysis}
-        className="flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 px-7 py-3 font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-60"
-      >
-        {loading ? (
-          <>
-            <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
-            Rewriting...
-          </>
-        ) : (
-          <>
-            <Sparkles size={18} />
-            Rewrite with AI
-          </>
-        )}
-      </button>
-
-    </div>
-
-    {/* Result */}
-
-    {rewrittenText && (
-
-      <div className="mt-8 rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-6">
-
-        <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-
+    <div className="rounded-2xl border border-slate-800 bg-slate-900/90 p-6 shadow-xl backdrop-blur-md">
+      {/* Header */}
+      <div className="mb-6 flex items-center justify-between border-b border-slate-800 pb-4">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 shadow-2xs">
+            <Sparkles size={20} />
+          </div>
           <div>
-
-            <h3 className="text-xl font-bold text-slate-900">
-              ✨ Improved {selectedLabel}
-            </h3>
-
-            <span className="mt-2 inline-flex rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700">
-              AI Rewrite Complete
-            </span>
-
+            <h2 className="text-base font-bold text-white">
+              AI Resume Section Rewriter
+            </h2>
+            <p className="text-xs text-slate-400">
+              Optimize resume phrasing for target keywords without changing factual details.
+            </p>
           </div>
-
-          {/* Buttons */}
-
-          <div className="flex flex-wrap gap-3">
-
-            {/* Copy */}
-
-            <button
-              onClick={copyText}
-              className="flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium transition hover:bg-slate-100"
-            >
-              {copied ? (
-                <>
-                  <Check size={18} />
-                  Copied
-                </>
-              ) : (
-                <>
-                  <Copy size={18} />
-                  Copy
-                </>
-              )}
-            </button>
-
-            {/* Download PDF */}
-
-            <button
-              onClick={downloadResumePDF}
-              className="flex items-center gap-2 rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-red-700"
-            >
-              <FileDown size={18} />
-              Download PDF
-            </button>
-            
-            {/* Download DOCX */}
-            <button
-                onClick={downloadResumeDOCX}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white transition"
-                >
-                <FileText size={18} />
-                DOCX
-            </button>
-
-            {/* Rewrite Again */}
-
-            <button
-              onClick={handleRewrite}
-              disabled={loading}
-              className="flex items-center gap-2 rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-violet-700 disabled:opacity-60"
-            >
-              <RotateCw size={18} />
-              Rewrite Again
-            </button>
-
-          </div>
-
         </div>
 
-        <textarea
-          id="rewriteTextarea"
-          value={rewrittenText}
-          onChange={(e) => setRewrittenText(e.target.value)}
-          className="min-h-[300px] w-full resize-none rounded-xl border border-slate-200 bg-white p-5 leading-8 text-slate-700 shadow-sm outline-none transition focus:border-violet-400 focus:ring-2 focus:ring-violet-200"
-        />
-
+        <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">
+          Powered by Groq LLM
+        </span>
       </div>
 
-    )}
+      {/* Control Bar */}
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mb-6">
+        <div className="relative flex-1">
+          <select
+            value={selectedSection}
+            onChange={(e) => setSelectedSection(e.target.value)}
+            className="w-full appearance-none rounded-xl border border-slate-800 bg-slate-950 px-4 py-2.5 pr-10 text-xs font-semibold text-slate-200 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+          >
+            {sections.map((section) => (
+              <option key={section.value} value={section.value}>
+                {section.label}
+              </option>
+            ))}
+          </select>
+          <ChevronDown
+            size={16}
+            className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+          />
+        </div>
 
-  </div>
-);
+        <button
+          type="button"
+          onClick={handleRewrite}
+          disabled={loading || !analysis}
+          className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-6 py-2.5 text-xs font-bold text-white shadow-lg hover:bg-indigo-500 transition-all disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
+        >
+          {loading ? (
+            <>
+              <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+              <span>Generating AI Rewrite...</span>
+            </>
+          ) : (
+            <>
+              <Sparkles size={14} className="text-amber-300" />
+              <span>Rewrite {selectedLabel}</span>
+            </>
+          )}
+        </button>
+      </div>
+
+      {/* Rewritten Output */}
+      {rewrittenText && (
+        <div className="rounded-xl border border-slate-800 bg-slate-950 p-5 shadow-2xl space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-850 pb-3 gap-3">
+            <div className="flex items-center gap-2">
+              <span className="rounded-md border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 text-[11px] font-bold text-emerald-400">
+                ✓ Improved {selectedLabel}
+              </span>
+              <span className="text-xs text-slate-400">Editable preview below</span>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-2">
+              <button
+                type="button"
+                onClick={copyText}
+                className="inline-flex items-center gap-1.5 rounded-lg border border-slate-800 bg-slate-900 px-3 py-1.5 text-xs font-semibold text-slate-300 hover:bg-slate-800 transition-colors"
+              >
+                {copied ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
+                <span>{copied ? "Copied" : "Copy"}</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={downloadResumePDF}
+                className="inline-flex items-center gap-1.5 rounded-lg border border-rose-500/30 bg-rose-500/10 px-3 py-1.5 text-xs font-semibold text-rose-300 hover:bg-rose-500/20 transition-colors"
+              >
+                <FileDown size={14} />
+                <span>PDF</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={downloadResumeDOCX}
+                className="inline-flex items-center gap-1.5 rounded-lg border border-indigo-500/30 bg-indigo-500/10 px-3 py-1.5 text-xs font-semibold text-indigo-300 hover:bg-indigo-500/20 transition-colors"
+              >
+                <FileText size={14} />
+                <span>DOCX</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={handleRewrite}
+                disabled={loading}
+                className="inline-flex items-center gap-1.5 rounded-lg border border-slate-800 bg-slate-900 px-3 py-1.5 text-xs font-semibold text-slate-300 hover:bg-slate-800 transition-colors"
+              >
+                <RotateCw size={14} />
+                <span>Regenerate</span>
+              </button>
+            </div>
+          </div>
+
+          <textarea
+            id="rewriteTextarea"
+            value={rewrittenText}
+            onChange={(e) => setRewrittenText(e.target.value)}
+            className="min-h-[200px] w-full resize-y rounded-lg border border-slate-800 bg-slate-900 p-4 font-mono text-xs leading-relaxed text-slate-200 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+          />
+        </div>
+      )}
+    </div>
+  );
 
 }
 

@@ -19,15 +19,13 @@ export default function ChatBot({ analysis }) {
       </AnimatePresence>
 
       <motion.button
-        whileHover={{ scale: 1.08 }}
+        whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setOpen(true)}
-        className="fixed bottom-6 right-6 z-50 flex items-center gap-3 rounded-full bg-indigo-600 px-5 py-4 text-white shadow-2xl transition hover:bg-indigo-700"
+        className="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 rounded-full border border-indigo-500/30 bg-indigo-600 px-4 py-3 text-xs font-bold text-white shadow-2xl shadow-indigo-600/40 transition hover:bg-indigo-500 active:scale-95"
       >
-        <MessageCircle size={22} />
-        <span className="font-medium">
-          Ask Resume AI
-        </span>
+        <MessageCircle size={18} className="text-amber-300" />
+        <span>Ask Copilot AI</span>
       </motion.button>
     </>
   );

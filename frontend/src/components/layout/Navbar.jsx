@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { FaRobot, FaGithub } from "react-icons/fa";
+import { FaGithub } from "react-icons/fa";
+import { FileSearch } from "lucide-react";
 
 function Navbar() {
   const [active, setActive] = useState("home");
@@ -10,12 +11,10 @@ function Navbar() {
 
     const onScroll = () => {
       setScrolled(window.scrollY > 20);
-
       let current = "home";
 
       sections.forEach((id) => {
         const section = document.getElementById(id);
-
         if (!section) return;
 
         const top = section.offsetTop - 120;
@@ -43,17 +42,17 @@ function Navbar() {
 
   const navItem = (id, label) => (
     <button
+      type="button"
       onClick={() => scrollToSection(id)}
-      className={`relative rounded-lg px-3 py-2 transition-all duration-300 hover:bg-blue-50 hover:text-blue-600 ${
+      className={`relative px-4 py-2 text-sm font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 rounded-lg ${
         active === id
-          ? "font-semibold text-blue-600"
-          : "text-slate-600"
+          ? "text-white bg-indigo-600/15 border border-indigo-500/30 shadow-xs"
+          : "text-slate-300 hover:text-white hover:bg-slate-900/60"
       }`}
     >
       {label}
-
       {active === id && (
-        <span className="absolute left-3 right-3 -bottom-1 h-0.5 rounded-full bg-blue-600" />
+        <span className="absolute inset-x-3 -bottom-1 h-0.5 rounded-full bg-gradient-to-r from-indigo-500 via-purple-400 to-indigo-400 shadow-[0_0_8px_#818cf8]" />
       )}
     </button>
   );
@@ -62,58 +61,55 @@ function Navbar() {
     <nav
       className={`sticky top-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "border-b border-slate-200 bg-white/90 shadow-sm backdrop-blur-xl"
-          : "border-b border-transparent bg-white/70 backdrop-blur-lg"
+          ? "border-b border-slate-800/80 bg-slate-950/90 backdrop-blur-2xl shadow-xl shadow-slate-950/50"
+          : "border-b border-slate-800/40 bg-slate-950/75 backdrop-blur-xl"
       }`}
     >
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 lg:px-8">
-
-        {/* Logo */}
-
+      <div className="mx-auto flex h-16 sm:h-18 max-w-[1650px] items-center justify-between px-4 sm:px-8 lg:px-12">
+        {/* Brand Logo */}
         <button
+          type="button"
           onClick={() => scrollToSection("home")}
-          className="flex items-center gap-3"
+          className="flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 rounded-xl p-1"
         >
-          <div className="rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 p-3 shadow-lg">
-            <FaRobot className="text-lg text-white" />
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-indigo-600 via-violet-500 to-indigo-400 text-white shadow-lg shadow-indigo-500/30 group-hover:scale-105 transition-all duration-300">
+            <FileSearch size={20} />
           </div>
 
           <div className="text-left">
-
-            <h1 className="text-2xl font-extrabold tracking-tight text-slate-900">
-              ResumeMatch{" "}
-              <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+            <div className="flex items-center gap-2">
+              <span className="text-base sm:text-lg font-extrabold tracking-tight text-white group-hover:text-indigo-200 transition-colors">
+                ResumeMatch
+              </span>
+              <span className="rounded-md bg-indigo-500/15 px-2 py-0.5 text-xs font-black text-indigo-300 border border-indigo-500/30 shadow-xs">
                 AI
               </span>
-            </h1>
-
-            <p className="text-xs text-slate-500">
-              AI Resume Analyzer
-            </p>
-
+            </div>
           </div>
         </button>
 
-        {/* Navigation */}
-
-        <div className="hidden items-center gap-8 md:flex">
-          {navItem("home", "Home")}
+        {/* Center Nav Links */}
+        <div className="hidden items-center gap-3 sm:flex">
+          {navItem("home", "Analyzer Workspace")}
           {navItem("features", "Features")}
-          {navItem("about", "About")}
+          {navItem("about", "About Platform")}
         </div>
 
-        {/* GitHub */}
+        {/* Right Actions */}
+        <div className="flex items-center gap-3.5">
 
-        <a
-          href="https://github.com/Subham5126/ResumeMatchAI"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hidden items-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-2.5 font-medium text-slate-700 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-500 hover:text-blue-600 hover:shadow-lg md:flex"
-        >
-          <FaGithub className="text-lg" />
-          GitHub
-        </a>
-
+          {/* GitHub CTA Button */}
+          <a
+            href="https://github.com/Subham5126/ResumeMatchAI"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-xl border border-slate-800 bg-slate-900 px-4 py-2 text-xs sm:text-sm font-bold text-slate-200 transition-all hover:border-indigo-500/50 hover:bg-slate-850 hover:text-white btn-glow-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 shadow-md"
+            aria-label="GitHub Repository"
+          >
+            <FaGithub size={16} />
+            <span>GitHub</span>
+          </a>
+        </div>
       </div>
     </nav>
   );

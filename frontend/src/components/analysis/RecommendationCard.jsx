@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import {
   Mail,
   Code2,
@@ -25,9 +24,9 @@ const icons = {
 };
 
 const priorityBadge = {
-  High: "bg-red-100 text-red-700",
-  Medium: "bg-amber-100 text-amber-700",
-  Low: "bg-blue-100 text-blue-700",
+  High: "bg-rose-500/10 text-rose-300 border-rose-500/30",
+  Medium: "bg-amber-500/10 text-amber-300 border-amber-500/30",
+  Low: "bg-indigo-500/10 text-indigo-300 border-indigo-500/30",
 };
 
 export default function RecommendationCard({ recommendation }) {
@@ -42,72 +41,55 @@ export default function RecommendationCard({ recommendation }) {
   const Icon = icons[category] || AlertCircle;
 
   return (
-    <motion.div
-      whileHover={{ y: -3 }}
-      transition={{ duration: 0.2 }}
-      className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:shadow-lg"
-    >
+    <div className="rounded-xl border border-slate-800 bg-slate-950/60 p-4 card-hover-effect cursor-pointer">
       {/* Header */}
-      <div className="flex items-start justify-between">
-
-        <div className="flex gap-4">
-
-          <div className="rounded-xl bg-slate-100 p-3">
-            <Icon className="text-slate-700" size={22} />
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <div className="rounded-lg bg-indigo-500/10 p-2 text-indigo-400 border border-indigo-500/20">
+            <Icon size={18} />
           </div>
 
           <div>
-
-            <p className="text-xs uppercase tracking-wide text-slate-500">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
               {category}
-            </p>
-
-            <h3 className="mt-1 text-lg font-semibold text-slate-800">
+            </span>
+            <h3 className="text-xs font-bold text-white">
               {title}
             </h3>
-
           </div>
-
         </div>
 
         <span
-          className={`rounded-full px-3 py-1 text-xs font-medium ${
-            priorityBadge[priority]
+          className={`rounded-md border px-2 py-0.5 text-[10px] font-bold ${
+            priorityBadge[priority] || priorityBadge.Medium
           }`}
         >
           {priority}
         </span>
-
       </div>
 
       {/* Description */}
-      <p className="mt-4 text-sm leading-6 text-slate-600">
+      <p className="mt-3 text-xs leading-relaxed text-slate-300">
         {description}
       </p>
 
       {/* Action */}
       {action && (
-        <div className="mt-5 flex items-start gap-3 rounded-xl bg-slate-50 p-3">
-
+        <div className="mt-3 flex items-start gap-2.5 rounded-lg border border-slate-800 bg-slate-900/90 p-2.5">
           <Lightbulb
-            size={18}
-            className="mt-0.5 text-indigo-600"
+            size={14}
+            className="mt-0.5 text-amber-400 shrink-0"
           />
-
           <div>
-
-            <p className="text-xs font-semibold uppercase text-slate-500">
+            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
               Suggested Action
             </p>
-
-            <p className="mt-1 text-sm text-slate-700">
+            <p className="mt-0.5 text-xs text-slate-200">
               {action}
             </p>
-
           </div>
-
         </div>
       )}
-    </motion.div>
+    </div>
   );
 }

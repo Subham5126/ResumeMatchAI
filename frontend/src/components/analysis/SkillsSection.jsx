@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import SkillBadge from "./SkillBadge";
 
 function SkillsSection({ matched = [], missing = [] }) {
@@ -10,39 +9,31 @@ function SkillsSection({ matched = [], missing = [] }) {
       : Math.round((matched.length / total) * 100);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 25 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.45 }}
-      viewport={{ once: true }}
-      className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm"
-    >
-      <div className="mb-8 text-center">
-        <h2 className="text-3xl font-bold text-slate-900">
-          Skills Analysis
+    <div className="rounded-2xl border border-slate-800 bg-slate-900/90 p-6 shadow-xl backdrop-blur-md">
+      <div className="mb-6 border-b border-slate-800 pb-4">
+        <h2 className="text-base font-bold text-white">
+          Skills & Keyword Matrix Audit
         </h2>
-
-        <p className="mt-3 text-slate-600">
+        <p className="mt-1 text-xs text-slate-400">
           Your resume matches{" "}
-          <span className="font-semibold text-blue-600">
+          <span className="font-bold text-emerald-400">
             {matched.length}
           </span>{" "}
           out of{" "}
-          <span className="font-semibold">
+          <span className="font-bold text-white">
             {total}
           </span>{" "}
-          required skills.
+          target job requirements.
         </p>
       </div>
 
-      <div className="grid gap-8 lg:grid-cols-2">
-
-        <div>
-          <h3 className="mb-5 text-xl font-semibold text-green-600">
-            ✓ Matched Skills
+      <div className="grid gap-6 lg:grid-cols-2">
+        <div className="rounded-xl border border-slate-800 bg-slate-950/60 p-4">
+          <h3 className="mb-3 text-xs font-bold uppercase tracking-wider text-emerald-400">
+            ✓ Extracted Matched Skills ({matched.length})
           </h3>
 
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-2">
             {matched.length ? (
               matched.map((skill, index) => (
                 <SkillBadge
@@ -52,19 +43,19 @@ function SkillsSection({ matched = [], missing = [] }) {
                 />
               ))
             ) : (
-              <p className="text-slate-500">
+              <p className="text-xs text-slate-500">
                 No matched skills found.
               </p>
             )}
           </div>
         </div>
 
-        <div>
-          <h3 className="mb-5 text-xl font-semibold text-red-600">
-            ✗ Missing Skills
+        <div className="rounded-xl border border-slate-800 bg-slate-950/60 p-4">
+          <h3 className="mb-3 text-xs font-bold uppercase tracking-wider text-rose-400">
+            ✗ Target Missing Keywords ({missing.length})
           </h3>
 
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-2">
             {missing.length ? (
               missing.map((skill, index) => (
                 <SkillBadge
@@ -74,31 +65,28 @@ function SkillsSection({ matched = [], missing = [] }) {
                 />
               ))
             ) : (
-              <p className="text-slate-500">
+              <p className="text-xs text-slate-500">
                 No missing skills 🎉
               </p>
             )}
           </div>
         </div>
-
       </div>
 
-      <div className="mt-10">
-        <div className="mb-2 flex justify-between text-sm font-medium">
-          <span>Skill Match Rate</span>
-          <span>{percentage}%</span>
+      <div className="mt-6 pt-4 border-t border-slate-800">
+        <div className="mb-2 flex justify-between text-xs font-semibold text-slate-400">
+          <span>Overall Skill Vector Coverage</span>
+          <span className="text-emerald-400 font-bold">{percentage}%</span>
         </div>
 
-        <div className="h-3 overflow-hidden rounded-full bg-slate-200">
-          <motion.div
-            initial={{ width: 0 }}
-            animate={{ width: `${percentage}%` }}
-            transition={{ duration: 0.8 }}
-            className="h-full rounded-full bg-gradient-to-r from-blue-500 to-indigo-600"
+        <div className="h-2 overflow-hidden rounded-full bg-slate-950">
+          <div
+            style={{ width: `${percentage}%` }}
+            className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-teal-400 transition-all duration-500"
           />
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 

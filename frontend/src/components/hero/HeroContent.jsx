@@ -1,86 +1,65 @@
-import { motion } from "framer-motion";
-import {
-  FaRobot,
-  FaCheckCircle,
-  FaArrowRight,
-} from "react-icons/fa";
-
-const features = [
-  "ATS Optimized",
-  "AI Powered",
-  "Learning Roadmap",
-];
+import { Sparkles, ArrowRight, CheckCircle2 } from "lucide-react";
 
 export default function HeroContent() {
-  return (
-    <motion.div
-      initial={{ opacity: 0, x: -30 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.6 }}
-      className="max-w-lg"
-    >
-      {/* Badge */}
+  const scrollToAnalyze = () => {
+    document.getElementById("analyze")?.scrollIntoView({ behavior: "smooth" });
+  };
 
-      <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-sm font-medium text-blue-700 shadow-sm">
-        <FaRobot />
-        Powered by AI
+  return (
+    <div className="max-w-3xl">
+      {/* Product Tag Badge */}
+      <div className="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-3.5 py-1 text-xs font-semibold text-indigo-300 shadow-xs mb-3">
+        <Sparkles size={14} className="text-indigo-400 animate-pulse" />
+        <span>Vector Match & ATS Audit Engine</span>
       </div>
 
-      {/* Heading */}
-
-      <h1 className="mt-6 text-4xl font-extrabold leading-tight tracking-tight text-slate-900 lg:text-5xl">
-        Optimize Your Resume
-
-        <br />
-
-        <span className="bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600 bg-clip-text text-transparent">
-          with AI
+      {/* Main Headline */}
+      <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-tight">
+        Optimize Your Resume for{" "}
+        <span className="text-gradient-animate">
+          ATS & Recruiter Success
         </span>
       </h1>
 
-      {/* Description */}
-
-      <p className="mt-5 text-base leading-7 text-slate-600">
-        Improve ATS compatibility, identify missing skills,
-        receive semantic matching, interview preparation,
-        and personalized learning recommendations.
+      {/* Subtitle */}
+      <p className="mt-3 text-sm sm:text-base leading-relaxed text-slate-300">
+        Benchmark your resume against job postings in seconds. Identify missing hard/soft skills, run automated ATS formatting audits, rewrite weak sections, and generate a custom learning roadmap.
       </p>
 
-      {/* CTA */}
+      {/* CTAs */}
+      <div className="mt-5 flex flex-wrap items-center gap-3.5">
+        <button
+          type="button"
+          onClick={scrollToAnalyze}
+          className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-indigo-600 to-violet-600 px-6 py-2.5 text-xs font-bold text-white shadow-lg btn-glow-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
+        >
+          <span>Start Deep Analysis</span>
+          <ArrowRight size={14} />
+        </button>
 
-      <motion.a
-        href="#analyze"
-        whileHover={{ scale: 1.03 }}
-        whileTap={{ scale: 0.97 }}
-        className="mt-8 inline-flex items-center gap-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-7 py-3.5 font-semibold text-white shadow-lg transition-all hover:shadow-xl"
-      >
-        Analyze Resume
-
-        <FaArrowRight />
-      </motion.a>
-
-      {/* Features */}
-
-      <div className="mt-8 flex flex-wrap gap-5">
-
-        {features.map((item) => (
-
-          <div
-            key={item}
-            className="flex items-center gap-2"
-          >
-            <FaCheckCircle className="text-green-500 text-sm" />
-
-            <span className="text-sm font-medium text-slate-700">
-              {item}
-            </span>
-
-          </div>
-
-        ))}
-
+        <a
+          href="#features"
+          className="inline-flex items-center gap-1.5 rounded-lg border border-slate-800 bg-slate-900 px-4 py-2.5 text-xs font-semibold text-slate-300 hover:border-slate-700 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
+        >
+          <span>Explore Capabilities</span>
+        </a>
       </div>
 
-    </motion.div>
+      {/* Feature Highlights */}
+      <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-slate-800/80 pt-4 text-xs text-slate-400">
+        <div className="flex items-center gap-1.5 font-medium">
+          <CheckCircle2 size={14} className="text-emerald-400 shrink-0" />
+          <span>ATS Format Auditor</span>
+        </div>
+        <div className="flex items-center gap-1.5 font-medium">
+          <CheckCircle2 size={14} className="text-emerald-400 shrink-0" />
+          <span>Semantic Skill Vector Match</span>
+        </div>
+        <div className="flex items-center gap-1.5 font-medium">
+          <CheckCircle2 size={14} className="text-emerald-400 shrink-0" />
+          <span>AI Interview & Roadmap</span>
+        </div>
+      </div>
+    </div>
   );
 }

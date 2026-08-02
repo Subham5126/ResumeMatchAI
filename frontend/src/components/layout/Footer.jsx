@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import {
   FaRobot,
   FaGithub,
@@ -7,145 +6,68 @@ import {
   FaHeart,
 } from "react-icons/fa";
 
-const techStack = [
-  "React",
-  "FastAPI",
-  "Groq",
-  "Tailwind CSS",
-];
-
 export default function Footer() {
   return (
-    <footer className="mt-24 border-t border-slate-200 bg-gradient-to-b from-white to-slate-50">
-
-      <div className="mx-auto max-w-7xl px-6 py-14">
-
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center"
-        >
-
+    <footer className="mt-16 border-t border-slate-800 bg-slate-950 text-slate-400">
+      <div className="mx-auto max-w-[1650px] px-4 sm:px-8 lg:px-12 py-10">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           {/* Logo */}
-
-          <div className="flex justify-center">
-
-            <div className="flex items-center gap-4">
-
-              <div className="rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 p-3 shadow-lg">
-                <FaRobot className="text-2xl text-white" />
-              </div>
-
-              <div className="text-left">
-
-                <h2 className="text-3xl font-extrabold tracking-tight">
-
-                  ResumeMatch{" "}
-
-                  <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                    AI
-                  </span>
-
-                </h2>
-
-                <p className="text-sm text-slate-500">
-                  AI Resume Analyzer
-                </p>
-
-              </div>
-
+          <div className="flex items-center gap-3">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 text-white shadow-lg">
+              <FaRobot size={18} />
             </div>
-
+            <div>
+              <h2 className="text-sm font-extrabold tracking-tight text-white">
+                ResumeMatch <span className="text-indigo-400">AI</span>
+              </h2>
+              <p className="text-[10px] text-slate-500">
+                Groq AI Resume Compatibility & ATS Auditor
+              </p>
+            </div>
           </div>
 
-          {/* Description */}
-
-          <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-600">
-            Optimize your resume with Artificial Intelligence,
-            improve ATS compatibility, identify missing skills,
-            and receive a personalized learning roadmap.
-          </p>
-
-          {/* Tech Stack */}
-
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
-
-            {techStack.map((tech) => (
-
-              <span
-                key={tech}
-                className="rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-sm font-medium text-blue-700"
-              >
-                {tech}
-              </span>
-
-            ))}
-
-          </div>
-
-          {/* Social Buttons */}
-
-          <div className="mt-10 flex flex-wrap justify-center gap-4">
-
+          {/* Social Links */}
+          <div className="flex items-center gap-3">
             <a
               href="https://github.com/Subham5126"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-slate-700 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-blue-500 hover:text-blue-600 hover:shadow-lg"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-slate-800 bg-slate-900 px-3 py-1.5 text-xs font-semibold text-slate-300 hover:bg-slate-850 hover:text-white transition-colors"
             >
-              <FaGithub />
-              GitHub
+              <FaGithub size={14} />
+              <span>GitHub</span>
             </a>
 
             <a
               href="https://www.linkedin.com/in/subham-phad"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-slate-700 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-blue-500 hover:text-blue-600 hover:shadow-lg"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-slate-800 bg-slate-900 px-3 py-1.5 text-xs font-semibold text-slate-300 hover:bg-slate-850 hover:text-white transition-colors"
             >
-              <FaLinkedin />
-              LinkedIn
+              <FaLinkedin size={14} />
+              <span>LinkedIn</span>
             </a>
 
             <a
               href="mailto:subhamnphad@gmail.com"
-              className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-slate-700 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-blue-500 hover:text-blue-600 hover:shadow-lg"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-slate-800 bg-slate-900 px-3 py-1.5 text-xs font-semibold text-slate-300 hover:bg-slate-850 hover:text-white transition-colors"
             >
-              <FaEnvelope />
-              Email
+              <FaEnvelope size={14} />
+              <span>Email</span>
             </a>
-
           </div>
+        </div>
 
-          {/* Divider */}
-
-          <div className="my-10 h-px w-full bg-slate-200/70" />
-
-          {/* Bottom */}
-
-          <div className="flex flex-col items-center justify-between gap-4 text-sm text-slate-500 md:flex-row">
-
-            <p>
-              © 2026 ResumeMatch AI. All rights reserved.
-            </p>
-
-            <p className="flex items-center gap-2">
-              Built with
-              <FaHeart className="text-red-500" />
-              by
-              <span className="font-semibold text-slate-700">
-                Subham Phad
-              </span>
-            </p>
-
-          </div>
-
-        </motion.div>
-
+        <div className="mt-8 pt-6 border-t border-slate-850 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-500 font-medium">
+          <p>© 2026 ResumeMatch AI. All rights reserved.</p>
+          <p className="flex items-center gap-1.5">
+            <span>Built with</span>
+            <FaHeart className="text-rose-500" size={12} />
+            <span>by</span>
+            <span className="font-semibold text-slate-300">Subham Phad</span>
+          </p>
+        </div>
       </div>
-
     </footer>
   );
 }

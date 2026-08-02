@@ -33,15 +33,41 @@ export default function ChatWindow({ onClose, analysis }) {
     });
   }, [messages]);
 
+  // Keywords that indicate the user needs analysis data to answer
+  const analysisKeywords = [
+    "ats score", "my score", "my resume", "my result", "my analysis",
+    "missing keyword", "matched skill", "vector match", "skill gap",
+    "why is my", "improve my resume", "rewrite my", "my ats", "my match",
+    "my skill", "my job", "my application", "my cover letter",
+  ];
+
+  const needsAnalysis = (text) => {
+    const lower = text.toLowerCase();
+    return analysisKeywords.some((kw) => lower.includes(kw));
+  };
+
   const handleSend = async () => {
     if (!input.trim() || loading) return;
 
-    if (!analysis) {
-      alert("Please analyze your resume first.");
+    const question = input;
+
+    // Only block if the question is specifically about their analysis results
+    if (!analysis && needsAnalysis(question)) {
+      const gateMessage = {
+        id: Date.now(),
+        role: "assistant",
+        content:
+          "It looks like you're asking about your resume analysis results. Please run an analysis first by uploading your resume and job description above — then I can give you personalised insights! 🚀",
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [
+        ...prev,
+        { id: Date.now() - 1, role: "user", content: question, timestamp: new Date() },
+        gateMessage,
+      ]);
+      setInput("");
       return;
     }
-
-    const question = input;
 
     const userMessage = {
       id: Date.now(),
@@ -66,8 +92,8 @@ export default function ChatWindow({ onClose, analysis }) {
     try {
       const response = await api.post("/chat/", {
         question,
-        analysis,
-        history, // We'll replace this with real chat history next
+        analysis: analysis || null,
+        history,
       });
 
       const aiReply = {
@@ -101,69 +127,51 @@ export default function ChatWindow({ onClose, analysis }) {
 
   return (
     <motion.div
-      initial={{
-        opacity: 0,
-        y: 40,
-        scale: 0.95,
-      }}
-      animate={{
-        opacity: 1,
-        y: 0,
-        scale: 1,
-      }}
-      exit={{
-        opacity: 0,
-        y: 40,
-      }}
-      transition={{
-        duration: 0.25,
-      }}
-      className="fixed bottom-24 right-6 z-50 flex h-[650px] w-[400px] flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-2xl"
+      initial={{ opacity: 0, y: 40, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: 40 }}
+      transition={{ duration: 0.2 }}
+      className="fixed bottom-20 right-6 z-50 flex h-[500px] w-[380px] flex-col overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-2xl backdrop-blur-xl"
     >
       {/* Header */}
-
-      <div className="flex items-center justify-between bg-indigo-600 px-5 py-4 text-white">
-        <div className="flex items-center gap-3">
-          <div className="rounded-full bg-white/20 p-2">
-            <Bot size={22} />
+      <div className="flex items-center justify-between border-b border-slate-800 bg-slate-950 px-4 py-3 text-white">
+        <div className="flex items-center gap-2.5">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+            <Bot size={18} />
           </div>
-
           <div>
-            <h2 className="font-semibold">
-              AI Career Coach
+            <h2 className="text-xs font-bold text-white">
+              Resume Copilot AI
             </h2>
-
-            <p className="text-xs text-indigo-100">
-              Powered by AI
+            <p className="text-[10px] text-slate-400">
+              AI Career Assistant
             </p>
           </div>
         </div>
 
         <button
+          type="button"
           onClick={onClose}
-          className="rounded-lg p-2 hover:bg-white/20"
+          className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-850 hover:text-white transition-colors"
         >
-          <X size={20} />
+          <X size={16} />
         </button>
       </div>
 
-      {/* Messages */}
-
-      <div className="flex-1 overflow-y-auto bg-slate-50 p-5">
+      {/* Messages Area */}
+      <div className="flex-1 overflow-y-auto bg-slate-950/80 p-4 space-y-3">
         {messages.map((message) => (
           <div
             key={message.id}
-            className={`mb-4 flex ${
-              message.role === "user"
-                ? "justify-end"
-                : "justify-start"
+            className={`flex ${
+              message.role === "user" ? "justify-end" : "justify-start"
             }`}
           >
             <div
-              className={`max-w-[80%] whitespace-pre-line rounded-2xl px-4 py-3 shadow-sm ${
+              className={`max-w-[85%] whitespace-pre-line rounded-xl px-3.5 py-2.5 text-xs leading-relaxed ${
                 message.role === "assistant"
-                  ? "rounded-tl-md bg-white text-slate-700"
-                  : "rounded-tr-md bg-indigo-600 text-white"
+                  ? "border border-slate-800 bg-slate-900 text-slate-200"
+                  : "bg-indigo-600 font-medium text-white shadow-md shadow-indigo-600/30"
               }`}
             >
               {message.content}
@@ -172,43 +180,29 @@ export default function ChatWindow({ onClose, analysis }) {
         ))}
 
         {loading && (
-          <div className="mb-4 flex justify-start">
-            <div className="rounded-2xl rounded-tl-md bg-white px-4 py-3 shadow-sm">
-              <div className="flex gap-1">
-                <span className="h-2 w-2 animate-bounce rounded-full bg-slate-400"></span>
-
-                <span
-                  className="h-2 w-2 animate-bounce rounded-full bg-slate-400"
-                  style={{
-                    animationDelay: "0.2s",
-                  }}
-                ></span>
-
-                <span
-                  className="h-2 w-2 animate-bounce rounded-full bg-slate-400"
-                  style={{
-                    animationDelay: "0.4s",
-                  }}
-                ></span>
+          <div className="flex justify-start">
+            <div className="rounded-xl border border-slate-800 bg-slate-900 px-3.5 py-2.5">
+              <div className="flex items-center gap-1.5">
+                <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-indigo-400" />
+                <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-indigo-400 [animation-delay:0.2s]" />
+                <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-indigo-400 [animation-delay:0.4s]" />
               </div>
             </div>
           </div>
         )}
 
         {messages.length === 1 && (
-          <div className="mt-6">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-500">
-              Suggested Questions
+          <div className="mt-4">
+            <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+              Suggested Prompts
             </p>
-
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-1.5">
               {suggestions.map((item) => (
                 <button
                   key={item}
-                  onClick={() =>
-                    handleSuggestion(item)
-                  }
-                  className="rounded-full border bg-white px-4 py-2 text-sm text-slate-700 transition hover:border-indigo-500 hover:bg-indigo-50"
+                  type="button"
+                  onClick={() => handleSuggestion(item)}
+                  className="rounded-md border border-slate-800 bg-slate-900 px-2.5 py-1 text-[11px] font-semibold text-slate-300 hover:border-indigo-500/40 hover:bg-slate-850 hover:text-white transition-colors text-left"
                 >
                   {item}
                 </button>
@@ -220,31 +214,29 @@ export default function ChatWindow({ onClose, analysis }) {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input */}
-
-      <div className="border-t bg-white p-4">
-        <div className="flex gap-3">
+      {/* Input Form */}
+      <div className="border-t border-slate-800 bg-slate-950 p-3">
+        <div className="flex gap-2">
           <input
             type="text"
             value={input}
-            placeholder="Ask anything..."
-            onChange={(e) =>
-              setInput(e.target.value)
-            }
+            placeholder="Ask Copilot AI..."
+            onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 handleSend();
               }
             }}
-            className="flex-1 rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-indigo-500"
+            className="flex-1 rounded-xl border border-slate-800 bg-slate-900 px-3 py-2 text-xs text-slate-100 placeholder-slate-500 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
           />
 
           <button
+            type="button"
             onClick={handleSend}
             disabled={loading}
-            className="rounded-xl bg-indigo-600 px-5 text-white transition hover:bg-indigo-700 disabled:opacity-50"
+            className="rounded-xl bg-indigo-600 px-3.5 text-white transition hover:bg-indigo-500 disabled:opacity-50"
           >
-            <Send size={20} />
+            <Send size={14} />
           </button>
         </div>
       </div>

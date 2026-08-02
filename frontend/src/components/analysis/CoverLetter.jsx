@@ -65,7 +65,7 @@ function CoverLetter({ analysis }) {
       toast.success("Copied to clipboard!");
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
+    } catch {
       toast.error("Failed to copy text.");
     }
   };
@@ -103,36 +103,40 @@ function CoverLetter({ analysis }) {
   }, [coverLetter]);
 
   return (
-    <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
+    <div className="rounded-2xl border border-slate-800 bg-slate-900/90 p-6 shadow-xl backdrop-blur-md">
       {/* Header */}
-      <div className="mb-8 flex items-center gap-4">
-        <div className="rounded-2xl bg-blue-100 p-3">
-          <FileText className="text-blue-600" size={24} />
+      <div className="mb-6 flex items-center justify-between border-b border-slate-800 pb-4">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 shadow-2xs">
+            <FileText size={20} />
+          </div>
+          <div>
+            <h2 className="text-base font-bold text-white">
+              AI Cover Letter Generator
+            </h2>
+            <p className="text-xs text-slate-400">
+              Generate a tailored cover letter based on your resume and target job requirements.
+            </p>
+          </div>
         </div>
 
-        <div>
-          <h2 className="text-2xl font-bold text-slate-900">
-            AI Cover Letter
-          </h2>
-          <p className="text-slate-500">
-            Generate a personalized cover letter for this job.
-          </p>
-        </div>
+        <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">
+          Tailored Application
+        </span>
       </div>
 
       {/* Controls */}
-      <div className="grid gap-6 md:grid-cols-2">
-        {/* Tone Selection */}
+      <div className="grid gap-4 sm:grid-cols-2 mb-6">
         <div>
-          <label htmlFor="tone-select" className="mb-2 block text-sm font-semibold text-slate-700">
-            Tone
+          <label htmlFor="tone-select" className="mb-1.5 block text-xs font-bold text-slate-300">
+            Select Tone
           </label>
           <div className="relative">
             <select
               id="tone-select"
               value={tone}
               onChange={(e) => setTone(e.target.value)}
-              className="w-full appearance-none rounded-xl border border-slate-300 px-4 py-3 pr-12 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:outline-none"
+              className="w-full appearance-none rounded-xl border border-slate-800 bg-slate-950 px-4 py-2.5 pr-10 text-xs font-semibold text-slate-200 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
             >
               {tones.map((item) => (
                 <option key={item.value} value={item.value}>
@@ -140,25 +144,23 @@ function CoverLetter({ analysis }) {
                 </option>
               ))}
             </select>
-
             <ChevronDown
-              size={20}
-              className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-500"
+              size={16}
+              className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
             />
           </div>
         </div>
 
-        {/* Length Selection */}
         <div>
-          <label htmlFor="length-select" className="mb-2 block text-sm font-semibold text-slate-700">
-            Length
+          <label htmlFor="length-select" className="mb-1.5 block text-xs font-bold text-slate-300">
+            Select Length
           </label>
           <div className="relative">
             <select
               id="length-select"
               value={length}
               onChange={(e) => setLength(e.target.value)}
-              className="w-full appearance-none rounded-xl border border-slate-300 px-4 py-3 pr-12 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:outline-none"
+              className="w-full appearance-none rounded-xl border border-slate-800 bg-slate-950 px-4 py-2.5 pr-10 text-xs font-semibold text-slate-200 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
             >
               {lengths.map((item) => (
                 <option key={item.value} value={item.value}>
@@ -166,95 +168,80 @@ function CoverLetter({ analysis }) {
                 </option>
               ))}
             </select>
-
             <ChevronDown
-              size={20}
-              className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-500"
+              size={16}
+              className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
             />
           </div>
         </div>
       </div>
 
-      {/* Generate Button */}
       <button
+        type="button"
         onClick={generateCoverLetter}
         disabled={loading || !analysis}
-        className="mt-6 flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 px-7 py-3 font-semibold text-white shadow-lg transition hover:scale-105 disabled:opacity-60 disabled:hover:scale-100"
+        className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-6 py-2.5 text-xs font-bold text-white shadow-lg hover:bg-indigo-500 transition-all disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
       >
         {loading ? (
           <>
-            <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
-            Generating...
+            <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+            <span>Generating Cover Letter...</span>
           </>
         ) : (
           <>
-            <Sparkles size={18} />
-            Generate Cover Letter
+            <Sparkles size={14} className="text-amber-300" />
+            <span>Generate Custom Cover Letter</span>
           </>
         )}
       </button>
 
       {/* Output Section */}
       {coverLetter && (
-        <div className="mt-8 rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-6">
-          <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <div>
-              <h3 className="text-xl font-bold text-slate-900">
-                📝 AI Cover Letter
-              </h3>
-              <span className="mt-2 inline-flex rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700">
-                Generated Successfully
+        <div className="mt-6 rounded-xl border border-slate-800 bg-slate-950 p-5 shadow-2xl space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-850 pb-3 gap-3">
+            <div className="flex items-center gap-2">
+              <span className="rounded-md border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 text-[11px] font-bold text-emerald-400">
+                ✓ Generated Cover Letter
               </span>
+              <span className="text-xs text-slate-400">Editable preview below</span>
             </div>
 
-            <div className="flex flex-wrap gap-3">
-              {/* Copy Button */}
+            <div className="flex flex-wrap items-center gap-2">
               <button
+                type="button"
                 onClick={copyText}
-                className="flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2 font-medium text-slate-700 transition hover:bg-slate-100"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-slate-800 bg-slate-900 px-3 py-1.5 text-xs font-semibold text-slate-300 hover:bg-slate-800 transition-colors"
               >
-                {copied ? (
-                  <>
-                    <Check size={18} className="text-green-600" />
-                    Copied
-                  </>
-                ) : (
-                  <>
-                    <Copy size={18} />
-                    Copy
-                  </>
-                )}
+                {copied ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
+                <span>{copied ? "Copied" : "Copy"}</span>
               </button>
 
-              {/* PDF Button */}
               <button
+                type="button"
                 onClick={downloadCoverLetterPDF}
-                className="flex items-center gap-2 rounded-lg bg-red-600 px-4 py-2 font-medium text-white transition hover:bg-red-700"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-rose-500/30 bg-rose-500/10 px-3 py-1.5 text-xs font-semibold text-rose-300 hover:bg-rose-500/20 transition-colors"
               >
-                <FileDown size={18} />
-                PDF
+                <FileDown size={14} />
+                <span>PDF</span>
               </button>
 
-              {/* DOCX Button */}
               <button
+                type="button"
                 onClick={downloadCoverLetterDOCX}
-                className="flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 font-medium text-white transition hover:bg-indigo-700"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-indigo-500/30 bg-indigo-500/10 px-3 py-1.5 text-xs font-semibold text-indigo-300 hover:bg-indigo-500/20 transition-colors"
               >
-                <FileText size={18} />
-                DOCX
+                <FileText size={14} />
+                <span>DOCX</span>
               </button>
 
-              {/* Regenerate Button */}
               <button
+                type="button"
                 onClick={generateCoverLetter}
                 disabled={loading || !analysis}
-                className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 font-medium text-white transition hover:bg-blue-700 disabled:opacity-60"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-slate-800 bg-slate-900 px-3 py-1.5 text-xs font-semibold text-slate-300 hover:bg-slate-800 transition-colors"
               >
-                <RotateCw size={18} 
-                className={loading ? "animate-spin" : ""}
-                 />
-                {loading ? "Generating..." : "Generate Again"}
-                
+                <RotateCw size={14} className={loading ? "animate-spin" : ""} />
+                <span>Regenerate</span>
               </button>
             </div>
           </div>
@@ -264,7 +251,7 @@ function CoverLetter({ analysis }) {
             aria-label="Cover Letter Content"
             value={coverLetter}
             onChange={(e) => setCoverLetter(e.target.value)}
-            className="min-h-[350px] w-full resize-none rounded-xl border border-slate-200 bg-white p-5 leading-8 text-slate-800 outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-200"
+            className="min-h-[250px] w-full resize-y rounded-lg border border-slate-800 bg-slate-900 p-4 font-sans text-xs leading-relaxed text-slate-200 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
           />
         </div>
       )}

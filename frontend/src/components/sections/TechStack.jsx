@@ -49,93 +49,60 @@ const stacks = [
 
 export default function TechStack() {
   return (
-    <section className="py-12">
-
+    <div className="py-12">
       {/* Heading */}
-
       <motion.div
-        initial={{ opacity: 0, y: 25 }}
+        initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
         viewport={{ once: true }}
-        className="text-center"
+        transition={{ duration: 0.5 }}
+        className="text-center max-w-xl mx-auto mb-10"
       >
-        <span className="rounded-full bg-blue-100 px-4 py-2 text-sm font-semibold text-blue-700">
-          Technologies Used
+        <span className="inline-flex items-center gap-1 rounded-md border border-indigo-500/30 bg-indigo-500/10 px-3 py-1 text-xs font-bold text-indigo-300">
+          Architecture & Stack
         </span>
 
-        <h2 className="mt-5 text-4xl font-bold text-slate-900 lg:text-5xl">
-          Built With Modern Tech
+        <h2 className="mt-3 text-2xl font-black tracking-tight text-white sm:text-3xl">
+          Powered by Enterprise Engineering Stack
         </h2>
 
-        <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-slate-600">
-          ResumeMatch AI combines modern web technologies,
-          Artificial Intelligence, and cloud tools to deliver
-          an intelligent resume analysis experience.
+        <p className="mt-2 text-xs text-slate-400">
+          Combining React 19, FastAPI, Groq LLM Inference engines, and vector similarity algorithms.
         </p>
       </motion.div>
 
-      {/* Cards */}
-
-      <div className="mt-10 grid gap-6 md:grid-cols-2">
-
+      {/* Cards Grid */}
+      <div className="grid gap-5 md:grid-cols-2">
         {stacks.map((stack, index) => (
-
           <motion.div
             key={stack.title}
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 25 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.45,
-              delay: index * 0.08,
-            }}
             viewport={{ once: true }}
-            whileHover={{
-              y: -5,
-            }}
-            className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:shadow-lg"
+            transition={{ duration: 0.4, delay: index * 0.1 }}
+            className="rounded-2xl border border-slate-800 bg-slate-900/90 p-5 shadow-xl backdrop-blur-md card-hover-effect cursor-pointer"
           >
-
-            <h3 className="text-xl font-bold text-slate-900">
-              {stack.title}
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+              {stack.title} Architecture
             </h3>
 
-            <div className="mt-5 flex flex-wrap gap-3">
-
+            <div className="mt-3 flex flex-wrap gap-2">
               {stack.tech.map((item) => (
-
                 <motion.div
                   key={item.name}
-                  whileHover={{
-                    scale: 1.05,
-                  }}
-                  transition={{
-                    type: "spring",
-                    stiffness: 300,
-                  }}
-                  className="flex cursor-default items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-2"
+                  whileHover={{ scale: 1.05 }}
+                  className="flex items-center gap-2 rounded-lg border border-slate-800 bg-slate-950 px-3 py-1.5 transition-colors hover:border-indigo-500/40 hover:bg-slate-900"
                 >
-
-                  <span className="text-lg">
-                    {item.icon}
-                  </span>
-
-                  <span className="text-sm font-medium text-slate-700">
+                  <span className="text-sm">{item.icon}</span>
+                  <span className="text-xs font-semibold text-slate-200">
                     {item.name}
                   </span>
-
                 </motion.div>
-
               ))}
-
             </div>
-
           </motion.div>
-
         ))}
-
       </div>
-
-    </section>
+    </div>
   );
 }
