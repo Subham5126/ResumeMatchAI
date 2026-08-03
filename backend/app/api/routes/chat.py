@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
+from typing import Optional
 
 from app.services.chat_service import ask_career_coach
 
@@ -11,7 +12,7 @@ router = APIRouter(
 
 class ChatRequest(BaseModel):
     question: str
-    analysis: dict
+    analysis: Optional[dict] = {}
     history: list = []
 
 

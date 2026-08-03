@@ -100,9 +100,9 @@ export default function ChatWindow({ onClose, analysis }) {
     setLoading(true);
 
     try {
-      const response = await api.post("/chat/", {
+      const response = await api.post("/chat", {
         question,
-        analysis: analysis || null,
+        analysis: analysis || {},
         history,
       });
 
