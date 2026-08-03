@@ -15,16 +15,12 @@ from app.services.scoring_engine import calculate_skill_score
 from app.services.recommendation_engine import generate_recommendations
 from app.services.ats_checker import calculate_ats_score
 
-from app.services.ai_interview_generator import generate_ai_interview_questions
-from app.services.interview_questions import generate_interview_questions
-
-from app.services.ai_roadmap_generator import generate_ai_roadmap
-from app.services.learning_roadmap import generate_learning_roadmap
-
 
 def analyze_resume(resume_path, job_description):
     """
-    Resume Analysis Pipeline (Render Free Tier Optimized)
+    Core Resume Analysis Pipeline — fast path, no expensive on-demand LLM calls.
+    Interview questions & learning roadmap are generated on-demand via
+    POST /generate/interview  and  POST /generate/roadmap.
     """
 
     # ======================================================
@@ -34,15 +30,7 @@ def analyze_resume(resume_path, job_description):
     resume_text = extract_resume_text(resume_path)
     resume_text = clean_resume_text(resume_text)
 
-    # ----------------------------
-    # Regex Resume Parser
-    # ----------------------------
-
     resume_data = parse_resume(resume_text)
-
-    # ----------------------------
-    # AI Resume Parser
-    # ----------------------------
 
     try:
         print("=" * 60)
@@ -50,21 +38,14 @@ def analyze_resume(resume_path, job_description):
         print("=" * 60)
 
         ai_resume_data = ai_parse_resume(resume_text)
-
         ai_resume_data = validate_resume(ai_resume_data)
-
-        resume_data = merge_resume_data(
-            resume_data,
-            ai_resume_data
-        )
+        resume_data    = merge_resume_data(resume_data, ai_resume_data)
 
         print("AI Resume Parsing Successful.")
 
     except Exception as e:
-
         print("=" * 60)
-        print("AI Resume Parsing Failed")
-        print(e)
+        print("AI Resume Parsing Failed:", e)
         print("Using Regex Resume Parser...")
         print("=" * 60)
 
@@ -84,7 +65,7 @@ def analyze_resume(resume_path, job_description):
     )
 
     # ======================================================
-    # Semantic Matching Disabled
+    # Semantic Matching (disabled — mirrors keyword score)
     # ======================================================
 
     semantic_result = {
@@ -114,68 +95,17 @@ def analyze_resume(resume_path, job_description):
     )
 
     # ======================================================
-    # AI Interview Questions
+    # Overall Score — weighted composite
     # ======================================================
 
-    try:
+    keyword_s  = keyword_result.get("score", 0)
+    ats_s      = ats_report.get("ats_score", 0)
+    semantic_s = semantic_result.get("semantic_score", keyword_s)
+    overall_score = round(
+        (keyword_s * 0.40) + (ats_s * 0.35) + (semantic_s * 0.25), 1
+    )
 
-        interview_questions = generate_ai_interview_questions(
-            resume_data=resume_data,
-            job_data=job_data,
-            matched_skills=keyword_result["matched_skills"],
-            missing_skills=keyword_result["missing_skills"]
-        )
-
-    except Exception as e:
-
-        print("=" * 60)
-        print("AI Interview Generation Failed")
-        print(e)
-        print("Using Rule-Based Questions...")
-        print("=" * 60)
-
-        interview_questions = generate_interview_questions(
-            keyword_result["matched_skills"],
-            keyword_result["missing_skills"]
-        )
-
-    # ======================================================
-    # AI Learning Roadmap
-    # ======================================================
-
-    try:
-
-        learning_roadmap = generate_ai_roadmap(
-            resume_data=resume_data,
-            job_data=job_data,
-            matched_skills=keyword_result["matched_skills"],
-            missing_skills=keyword_result["missing_skills"],
-            recommendations=recommendations
-        )
-
-    except Exception as e:
-
-        print("=" * 60)
-        print("AI Roadmap Generation Failed")
-        print(e)
-        print("Using Rule-Based Roadmap...")
-        print("=" * 60)
-
-        learning_roadmap = generate_learning_roadmap(
-            keyword_result["missing_skills"]
-        )
-
-    # ======================================================
-    # Overall Score
-    # ======================================================
-
-    overall_score = keyword_result["score"]
-
-    # ======================================================
-    # Final Response
-    # ======================================================
-
-    response = {
+    return {
         "overall_score": overall_score,
         "resume": resume_data,
         "job": job_data,
@@ -183,8 +113,6 @@ def analyze_resume(resume_path, job_description):
         "semantic_analysis": semantic_result,
         "recommendations": recommendations,
         "ats_report": ats_report,
-        "interview_questions": interview_questions,
-        "learning_roadmap": learning_roadmap
+        # NOTE: interview_questions & learning_roadmap are NOT pre-generated.
+        # They are fetched on-demand via /generate/interview & /generate/roadmap.
     }
-
-    return response

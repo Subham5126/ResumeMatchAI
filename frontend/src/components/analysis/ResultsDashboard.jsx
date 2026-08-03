@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Lightbulb, LayoutDashboard, ShieldCheck, Sparkles, GraduationCap } from "lucide-react";
 import ResumeRewrite from "./ResumeRewrite";
 import DashboardHeader from "./DashboardHeader";
@@ -6,32 +6,42 @@ import ScoreCard from "./ScoreCard";
 import ATSReport from "./ATSReport";
 import SkillsSection from "./SkillsSection";
 import RecommendationCard from "./RecommendationCard";
-import InterviewQuestions from "./InterviewQuestions";
-import LearningRoadmap from "../roadmap/LearningRoadmap";
+import CareerTab from "./CareerTab";
 import CoverLetter from "./CoverLetter";
+import SkillChart from "./SkillChart";
 
 function ResultsDashboard({ analysis }) {
   const [activeTab, setActiveTab] = useState("overview");
 
+  // Load previous scores lazily from localStorage
+  const [prevScores] = useState(() => {
+    try {
+      const stored = localStorage.getItem('resumematch_score_history');
+      return stored ? JSON.parse(stored) : null;
+    } catch {
+      return null;
+    }
+  });
+
+  useEffect(() => {
+    // Save current scores for next-run delta comparison
+    const current = {
+      overall: analysis.overall_score ?? 0,
+      ats: analysis.ats_report?.ats_score ?? 0,
+      keyword: analysis.keyword_analysis?.score ?? 0,
+      semantic: analysis.semantic_analysis?.semantic_score ?? 0,
+      timestamp: new Date().toISOString(),
+    };
+    localStorage.setItem('resumematch_score_history', JSON.stringify(current));
+  }, [analysis]);
+
   if (!analysis) return null;
 
   const scoreCards = [
-    {
-      title: "Overall Match",
-      score: analysis.overall_score ?? 0,
-    },
-    {
-      title: "ATS Score",
-      score: analysis.ats_report?.ats_score ?? analysis.overall_score ?? 0,
-    },
-    {
-      title: "Keyword Match",
-      score: analysis.keyword_analysis?.score ?? 0,
-    },
-    {
-      title: "Semantic Match",
-      score: analysis.semantic_analysis?.semantic_score ?? 0,
-    },
+    { title: 'Overall Match', score: analysis.overall_score ?? 0, prevScore: prevScores?.overall },
+    { title: 'ATS Score', score: analysis.ats_report?.ats_score ?? analysis.overall_score ?? 0, prevScore: prevScores?.ats },
+    { title: 'Keyword Match', score: analysis.keyword_analysis?.score ?? 0, prevScore: prevScores?.keyword },
+    { title: 'Semantic Match', score: analysis.semantic_analysis?.semantic_score ?? 0, prevScore: prevScores?.semantic },
   ];
 
   const tabs = [
@@ -82,7 +92,7 @@ function ResultsDashboard({ analysis }) {
           {/* Score Cards Grid */}
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {scoreCards.map((card) => (
-              <ScoreCard key={card.title} title={card.title} score={card.score} />
+              <ScoreCard key={card.title} title={card.title} score={card.score} prevScore={card.prevScore} />
             ))}
           </div>
 
@@ -124,6 +134,11 @@ function ResultsDashboard({ analysis }) {
         <div className="space-y-6 animate-fadeIn">
           {analysis.ats_report && <ATSReport report={analysis.ats_report} />}
 
+          <SkillChart
+            matched={analysis.keyword_analysis?.matched_skills ?? []}
+            missing={analysis.keyword_analysis?.missing_skills ?? []}
+          />
+
           <SkillsSection
             matched={analysis.keyword_analysis?.matched_skills ?? []}
             missing={analysis.keyword_analysis?.missing_skills ?? []}
@@ -139,17 +154,9 @@ function ResultsDashboard({ analysis }) {
         </div>
       )}
 
-      {/* Tab 4: Career & Interview */}
+      {/* Tab 4: Career & Interview — On-Demand Generation */}
       {activeTab === "career" && (
-        <div className="space-y-6 animate-fadeIn">
-          {analysis.interview_questions && Object.keys(analysis.interview_questions).length > 0 && (
-            <InterviewQuestions questions={analysis.interview_questions} />
-          )}
-
-          {analysis.learning_roadmap && (
-            <LearningRoadmap roadmap={analysis.learning_roadmap} />
-          )}
-        </div>
+        <CareerTab analysis={analysis} />
       )}
 
       {/* Footer Feedback Box */}
@@ -159,7 +166,7 @@ function ResultsDashboard({ analysis }) {
             How was your ResumeMatch AI analysis experience?
           </h3>
           <p className="text-xs text-slate-400 mt-0.5">
-            Your feedback helps us continuously refine our Groq AI extraction models.
+            Your feedback helps us continuously refine our AI extraction models.
           </p>
         </div>
 

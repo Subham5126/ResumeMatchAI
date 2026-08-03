@@ -20,12 +20,22 @@ export default function ChatWindow({ onClose, analysis }) {
 
   const messagesEndRef = useRef(null);
 
-  const suggestions = [
-    "Why is my ATS score low?",
-    "How can I improve my resume?",
-    "Rewrite my project description",
-    "What skills should I learn first?",
-  ];
+  // Personalized suggestions if analysis available, otherwise generic
+  const suggestions = analysis
+    ? [
+        `Why did I score ${Math.round(analysis.overall_score ?? 0)}% overall?`,
+        analysis.keyword_analysis?.missing_skills?.length
+          ? `How do I add "${analysis.keyword_analysis.missing_skills[0]}" to my resume?`
+          : "What keywords should I add to my resume?",
+        `How can I improve my ATS score of ${Math.round(analysis.ats_report?.ats_score ?? 0)}%?`,
+        "Suggest interview questions for this role",
+      ]
+    : [
+        "What is ATS and how does it work?",
+        "How can I improve my resume?",
+        "What skills are in demand for software engineers?",
+        "What should I learn first to get hired faster?",
+      ];
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({

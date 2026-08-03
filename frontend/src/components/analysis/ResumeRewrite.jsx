@@ -114,7 +114,7 @@ function ResumeRewrite({ analysis }) {
         </div>
 
         <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">
-          Powered by Groq LLM
+          AI-Powered Rewriter
         </span>
       </div>
 

@@ -1,113 +1,181 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Cpu, CheckCircle2 } from "lucide-react";
+import {
+  Upload, FileText, Brain, Target, ShieldCheck,
+  Lightbulb, Mic, BookOpen, Sparkles, Clock,
+} from "lucide-react";
 
-const steps = [
-  { icon: "📤", title: "Uploading Resume Document..." },
-  { icon: "📄", title: "Extracting Text & Structural Elements..." },
-  { icon: "🤖", title: "Analyzing Resume with Groq AI..." },
-  { icon: "🎯", title: "Running Vector Skill Similarity Match..." },
-  { icon: "📊", title: "Calculating ATS Readability & Format Score..." },
-  { icon: "💡", title: "Generating Strategic AI Recommendations..." },
-  { icon: "🎤", title: "Creating Role-Specific Practice Interview Questions..." },
-  { icon: "📚", title: "Building 4-Week Custom Learning Roadmap..." },
-  { icon: "✨", title: "Finalizing Executive Analysis Dashboard..." },
+const STEPS = [
+  { icon: Upload,      label: "Uploading Resume",            detail: "Securely transferring your document to the AI engine",        duration: 800  },
+  { icon: FileText,    label: "Parsing Document Structure",  detail: "Extracting text, sections & layout from your resume",        duration: 1400 },
+  { icon: Brain,       label: "Running AI Resume Analysis",  detail: "LLM identifying roles, skills, experience & achievements",   duration: 2800 },
+  { icon: Target,      label: "Semantic Skill Matching",     detail: "Vector-embedding your skills against job requirements",      duration: 2200 },
+  { icon: ShieldCheck, label: "ATS Compatibility Audit",     detail: "Scoring formatting, keywords & section completeness",        duration: 1600 },
+  { icon: Lightbulb,   label: "Generating Recommendations",  detail: "Crafting personalised action steps to boost your score",     duration: 1800 },
+  { icon: Mic,         label: "Building Interview Questions",detail: "Creating role-specific practice questions from your profile", duration: 2000 },
+  { icon: BookOpen,    label: "Creating Learning Roadmap",   detail: "Mapping a 4-week skill-gap plan for your target role",      duration: 1800 },
+  { icon: Sparkles,    label: "Finalising Dashboard",        detail: "Assembling your complete ATS & career intelligence report",  duration: 600  },
 ];
 
-function AnalysisLoader() {
-  const [step, setStep] = useState(0);
+const TOTAL_MS = STEPS.reduce((s, st) => s + st.duration, 0);
 
+export default function AnalysisLoader() {
+  const [activeStep, setActiveStep] = useState(0);
+  const [stepProgress, setStepProgress] = useState(0);
+  const [overallProgress, setOverallProgress] = useState(0);
+  const [elapsed, setElapsed] = useState(0);
+
+  const startTime = useRef(null);
+  const stepStart  = useRef(null);
+
+  // Global clock
   useEffect(() => {
-    const interval = setInterval(() => {
-      setStep((prev) => (prev < steps.length - 1 ? prev + 1 : prev));
-    }, 1800);
-
-    return () => clearInterval(interval);
+    startTime.current = Date.now();
+    const t = setInterval(
+      () => setElapsed(Math.floor((Date.now() - startTime.current) / 1000)),
+      500
+    );
+    return () => clearInterval(t);
   }, []);
 
-  const progress = Math.round(((step + 1) / steps.length) * 100);
+  // Per-step timer
+  useEffect(() => {
+    if (activeStep >= STEPS.length) return;
+    stepStart.current = Date.now();
+    const duration = STEPS[activeStep].duration;
+
+    const ticker = setInterval(() => {
+      const frac = Math.min((Date.now() - stepStart.current) / duration, 1);
+      setStepProgress(frac);
+
+      const doneMs = STEPS.slice(0, activeStep).reduce((s, st) => s + st.duration, 0);
+      setOverallProgress(Math.min(((doneMs + frac * duration) / TOTAL_MS) * 100, 99));
+    }, 40);
+
+    const advance = setTimeout(() => {
+      clearInterval(ticker);
+      setActiveStep((p) => p + 1);
+      setStepProgress(0);
+    }, duration);
+
+    return () => { clearInterval(ticker); clearTimeout(advance); };
+  }, [activeStep]);
+
+  const step = STEPS[Math.min(activeStep, STEPS.length - 1)];
+  const Icon = step.icon;
+
+  const estRemaining = Math.max(
+    0,
+    Math.round(STEPS.slice(activeStep).reduce((s, st) => s + st.duration, 0) / 1000)
+  );
 
   return (
-    <div className="rounded-2xl border border-slate-800 bg-slate-900/90 p-6 shadow-2xl backdrop-blur-xl glow-indigo max-w-2xl mx-auto mt-6">
-      {/* Header */}
-      <div className="flex items-center justify-between border-b border-slate-800 pb-4 mb-5">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 shadow-md">
-            <Cpu size={20} className="animate-pulse" />
-          </div>
+    <div className="max-w-xl mx-auto mt-8 space-y-4">
 
-          <div>
-            <h2 className="text-sm font-bold text-white flex items-center gap-2">
-              <span>Groq AI Resume Engine</span>
-              <span className="rounded-md border border-indigo-500/30 bg-indigo-500/10 px-2 py-0.5 text-[10px] font-semibold text-indigo-300">
-                Llama-3.3-70b
+      {/* Header row */}
+      <div className="flex items-center justify-between px-1">
+        <div className="flex items-center gap-2 text-xs text-slate-400 font-medium">
+          <Clock size={13} />
+          <span>{elapsed}s elapsed</span>
+        </div>
+        <div className="flex items-center gap-3 text-xs text-slate-400 font-medium">
+          <span>Step {Math.min(activeStep + 1, STEPS.length)} / {STEPS.length}</span>
+          <span className="text-indigo-400 font-bold">{Math.round(overallProgress)}%</span>
+        </div>
+      </div>
+
+      {/* Master progress bar */}
+      <div className="w-full h-1.5 rounded-full bg-slate-800 overflow-hidden">
+        <motion.div
+          className="h-full rounded-full bg-gradient-to-r from-indigo-500 via-violet-500 to-emerald-400 relative overflow-hidden"
+          animate={{ width: `${overallProgress}%` }}
+          transition={{ duration: 0.08, ease: "linear" }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent animate-shimmer" />
+        </motion.div>
+      </div>
+
+      {/* Single step card — swaps with AnimatePresence */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activeStep}
+          initial={{ opacity: 0, y: 24, scale: 0.97 }}
+          animate={{ opacity: 1, y: 0,  scale: 1    }}
+          exit   ={{ opacity: 0, y: -20, scale: 0.97 }}
+          transition={{ duration: 0.28, ease: [0.4, 0, 0.2, 1] }}
+          className="relative rounded-2xl border border-indigo-500/30 bg-slate-900 shadow-2xl overflow-hidden"
+        >
+          {/* Top shimmer accent */}
+          <div className="h-px bg-gradient-to-r from-transparent via-indigo-500 to-transparent" />
+
+          <div className="p-6 flex items-start gap-5">
+            {/* Icon */}
+            <div className="relative shrink-0">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-indigo-500/10 border border-indigo-500/25 shadow-lg">
+                <Icon size={26} className="text-indigo-400" />
+              </div>
+              {/* Pulsing ring */}
+              <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-60" />
+                <span className="relative inline-flex h-3.5 w-3.5 rounded-full bg-indigo-500" />
               </span>
-            </h2>
-
-            <p className="text-xs text-slate-400 mt-0.5">
-              Executing deep ATS formatting & semantic vector analysis...
-            </p>
-          </div>
-        </div>
-
-        <div className="text-right">
-          <span className="text-2xl font-black text-emerald-400 tracking-tight">
-            {progress}%
-          </span>
-          <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
-            Completed
-          </p>
-        </div>
-      </div>
-
-      {/* Progress Bar */}
-      <div className="mb-6">
-        <div className="w-full h-2 rounded-full bg-slate-950 overflow-hidden border border-slate-850">
-          <motion.div
-            className="h-full bg-gradient-to-r from-indigo-500 via-violet-500 to-emerald-400 rounded-full"
-            animate={{ width: `${progress}%` }}
-            transition={{ duration: 0.4 }}
-          />
-        </div>
-      </div>
-
-      {/* Current Step Banner */}
-      <div className="rounded-xl border border-slate-800 bg-slate-950/70 p-4">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={step}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.25 }}
-            className="flex items-center gap-3.5"
-          >
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-900 border border-slate-800 text-xl shrink-0">
-              {steps[step].icon}
             </div>
 
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center justify-between text-[11px] font-semibold text-slate-400 mb-0.5">
-                <span>Step {step + 1} of {steps.length}</span>
-                <span className="flex items-center gap-1 text-emerald-400">
-                  <CheckCircle2 size={12} />
-                  <span>Processing</span>
+            {/* Text */}
+            <div className="flex-1 min-w-0 pt-0.5">
+              <div className="flex items-center justify-between gap-2 mb-1">
+                <h3 className="text-base font-bold text-white truncate">{step.label}</h3>
+                <span className="shrink-0 rounded-md border border-indigo-500/30 bg-indigo-500/10 px-2 py-0.5 text-[11px] font-bold text-indigo-300 animate-pulse">
+                  Processing
                 </span>
               </div>
+              <p className="text-sm text-slate-400 leading-relaxed">{step.detail}</p>
 
-              <h3 className="text-xs font-bold text-white truncate">
-                {steps[step].title}
-              </h3>
+              {/* Step-local progress bar */}
+              <div className="mt-4 h-1 w-full rounded-full bg-slate-800 overflow-hidden">
+                <motion.div
+                  className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-violet-400"
+                  animate={{ width: `${stepProgress * 100}%` }}
+                  transition={{ duration: 0.06, ease: "linear" }}
+                />
+              </div>
 
-              <p className="text-[11px] text-slate-400 mt-0.5">
-                Estimated time remaining: ~{Math.max(1, Math.round((steps.length - step) * 1.8))}s
-              </p>
+              <div className="flex justify-between mt-1 text-[11px] text-slate-500 font-medium">
+                <span>~{estRemaining}s remaining</span>
+                <span>{Math.round(stepProgress * 100)}%</span>
+              </div>
             </div>
-          </motion.div>
-        </AnimatePresence>
+          </div>
+
+          {/* Bottom shimmer accent */}
+          <div className="h-px bg-gradient-to-r from-transparent via-violet-500/40 to-transparent" />
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Dot stepper */}
+      <div className="flex items-center justify-center gap-1.5 pt-1">
+        {STEPS.map((_, i) => (
+          <motion.div
+            key={i}
+            animate={{
+              width:   i === activeStep ? 20 : 6,
+              opacity: i < activeStep ? 1 : i === activeStep ? 1 : 0.3,
+              backgroundColor:
+                i < activeStep
+                  ? "#34d399"           // emerald — done
+                  : i === activeStep
+                  ? "#818cf8"           // indigo  — active
+                  : "#334155",          // slate   — pending
+            }}
+            transition={{ duration: 0.25 }}
+            className="h-1.5 rounded-full"
+          />
+        ))}
       </div>
+
+      <p className="text-center text-[11px] text-slate-500 font-medium pb-2">
+        This usually takes 15–25 seconds · Do not close this tab
+      </p>
     </div>
   );
 }
-
-export default AnalysisLoader;

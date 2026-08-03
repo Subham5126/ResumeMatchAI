@@ -7,6 +7,7 @@ from app.api.routes.match import router as match_router
 from app.api.routes.analyze import router as analyze_router
 from app.api.routes.chat import router as chat_router
 from app.api.routes.cover_letter import router as cover_letter_router
+from app.api.routes.generate import router as generate_router
 app = FastAPI(
     title="ResumeMatch AI",
     description="AI-powered Resume Analyzer API",
@@ -24,6 +25,7 @@ app.include_router(analyze_router)
 app.include_router(chat_router)
 app.include_router(rewrite_router)
 app.include_router(cover_letter_router)
+app.include_router(generate_router)
 # ===========================
 # CORS Configuration
 # ===========================
